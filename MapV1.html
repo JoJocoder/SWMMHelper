@@ -1,0 +1,5519 @@
+<!-- Author：MAO JIANDONG -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <title> GISWMM地图 </title>
+  <script>
+  　　function checkLeave(){
+  　　　　event.returnValue="确定离开当前页面吗？";
+  　　}
+ 　　</script>
+  <meta charset="utf-8">
+  <meta name="generator" content="editplus" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="author" content="" />
+  <meta name="keywords" content="" />
+  <meta name="description" content="" />
+  <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+  <script type="text/javascript" src="jquery.min.js"></script>
+<link rel="stylesheet" href="bootstrap.min.css">
+	<script src="bootstrap.min.js"></script>
+  <script type="text/javascript" src="html2canvas.min.js"></script>
+   <script src="keymage.min.js"></script>
+<script src="http://webapi.amap.com/maps?v=1.4.2&key=48f0eb4e1db28f2b96da21636751cdba&plugin=AMap.Scale,AMap.MouseTool,AMap.Driving,AMap.ArrivalRange,AMap.Autocomplete,AMap.PlaceSearch,AMap.DistrictSearch,AMap.Geocoder"></script>
+  <script src="es5.min.js"></script>
+  <script src="jquery.range.js"></script>
+<script src="http://a.amap.com/Loca/static/mock/heatmapData.js"></script>
+  <link rel="stylesheet" href="http://cache.amap.com/lbs/static/jquery.range.css"/>
+
+  <style type="text/css">
+  html, body {
+	margin: 0;
+	height: 100%;
+	width: 100%;
+	position: absolute;
+	font-family:"微软雅黑",Arial,Helvetica,sans-serif;
+	}
+    #setmap{height:20px;position: absolute;bottom:10px;text-align:right;right:10px;}
+	#swmm{height:20px;position: absolute;top:10px;text-align:right;right:10px;}
+    #tools{height:20px;position: absolute;top:10px;left:10px;}
+	#mapcontainer{height:100%;width:100%;position:absolute;top:0;left:0;right:0;bottom:0;}
+	.button {
+	margin-right:0px;
+	background-color: #FFFFFF;
+	color: #5F6477;
+	border: 1;
+	outdrawLine: none;
+	border-radius: 0px;
+	cursor: pointer;
+	box-shadow:2px 2px 2px #000;
+	width:60px; 
+	height:30px;
+	font-size: 10px;
+	border-style: none dashed none dashed;
+	border-width: 1px;
+	}
+.rightbutton
+{
+margin-right:0px;
+	background-color: #FFFFFF;
+	color: #5F6477;
+	border: 1;
+	outdrawLine: none;
+	border-radius: 0px;
+	cursor: pointer;
+	box-shadow:2px 2px 2px #000;
+	width:80px; 
+	height:30px;
+	font-size: 10px;
+	border-style: none dashed none dashed;
+	border-width: 1px;
+	}
+	.rightbutton:link {color: #FF0000}
+    .rightbutton:visited {color: #00FF00}
+	.rightbutton:hover {background-color: #E6E6E6;}
+	.rightbutton:active{
+    position:relative;
+    top:1px; 
+	color: #0000FF;
+}
+	.button:hover {background-color: #E6E6E6;}
+	.button:active{
+    position:relative;
+    top:1px; 
+	background-color: #1E90FF;
+}
+	
+.bottombutton
+{
+    margin-right:0px;
+	background-color: #FFFFFF;
+	color: #5F6477;
+	border: 1;
+	outdrawLine: none;
+	border-radius: 0px;
+	cursor: pointer;
+	box-shadow:2px 2px 2px #000;
+	width:60px; 
+	height:30px;
+	font-size: 10px;
+	border-style: none dashed none dashed;
+	border-width: 1px;
+	}
+	.bottombutton:hover {background-color: #E6E6E6;}
+
+	.button:active{
+    position:relative;
+    top:1px; 
+}
+
+    #tipgongjiao,#boundarypool{
+	background-color: #fff;
+	padding-left: 10px;
+	padding-right: 10px;
+	position: absolute;
+	font-size: 13px;
+	right: 190px;
+	bottom:32px;;
+	border-radius: 3px;
+	border: 1px solid #FFFFFF;
+	drawLine-height: 30px;
+	display:none;
+    }
+	#LngLatpool{
+	background-color: #fff;
+	padding-left: 10px;
+	padding-right: 10px;
+	position: absolute;
+	font-size: 14px;
+	left: 150px;
+	top:40px;;
+	border-radius: 3px;
+	border: 1px solid #FFFFFF;
+	drawLine-height: 30px;
+	display:none;
+    }
+    #tipgongjiao input{width: 80px;height:20px;}
+	.amap-marker-label{background:#FFC125;border:0;font-size:15px;color:#000;}
+	.zhu{
+	color:#000;
+	-webkit-text-stroke-width:1px;
+	-webkit-text-stroke-color:#F33;
+	}
+	.input-group{width:300px;height:30px;border-radius:0px}
+	.input-group-addon{width:160px;height:30px;border-radius:0px}
+	.form-control{border-radius:0px;font-size:8px}
+	.modal-dialog{width:342px;height:100px}
+	.controls {
+    position: absolute;
+    right: 35px;
+}
+	.control-label {
+    position: absolute;
+    left: 35px;
+}
+.bianse
+{
+color:red
+}
+	
+  </style>
+ </head>
+ <body onbeforeunload="checkLeave()">
+  <div id="mapcontainer"></div>
+  <div id="setmap"></div>
+  <div id="tools"></div>
+   <div id="swmm"></div>
+<div id="tipgongjiao" class="button-group">
+    所点击位置 
+    X:<input type="text" name="x" id='lngX' value="116.39742"/>
+    Y:<input type="text" name="y" id='latY' value="39.909325"/>
+    <br>
+    时间：
+    <input type="hidden" id="t" class="single-slider" value="30" />
+    <br>
+    交通类型:
+    <select name="v" id="v">
+        <option value ="BUS,SUBWAY">地铁+公交</option>
+        <option value ="SUBWAY">地铁</option>
+        <option value ="BUS">公交</option>
+    </select>
+    <input type="button" class="button" value="生活圈" onClick="javascript:adddrawSub()"/>
+    <input type="button" class="button" value="清空" onClick="javascript:deldrawSub()"/>
+</div>
+<div id="boundarypool">
+<input name="city" type="checkbox" value="南京市" />南京
+<input name="city" type="checkbox" value="上海市" />上海
+<input name="city" type="checkbox" value="合肥市" />合肥
+<input name="city" type="checkbox" value="句容市" />句容<br />
+<input name="city" type="checkbox" value="滁州市" />滁州
+<input name="city" type="checkbox" value="徐州市" />徐州
+<input type='button' value='OK' id='boundaryok'/>
+</div>
+<div id="LngLatpool">
+<input name="coordinate" type="checkbox" value="baidu" />百度
+<input name="coordinate" type="checkbox" value="gaode" />高德
+<input type='button' value='OK' id='zuobiaook'/>
+</div>
+<div class="modal fade" id="SubModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog" align="center" style="width: 342px;height:500px;overflow:auto;"; >
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+					&times;
+				</button>
+				<h4 class="modal-title" id="myModalLabel">
+					子汇水面积
+				</h4>
+			</div>
+			 <form class="bs-example bs-example-form" role="form">
+        <div class="input-group">
+            <span class="input-group-addon">名称</span>
+            <input type="text" class="form-control" value="子汇水面积名"  id="subName" value="ID">
+        </div>
+        <div class="input-group">
+			<span class="input-group-addon">X坐标</span>
+            <input type="text" class="form-control" id="subX-coordinate" value="中心点X坐标">
+            
+        </div>
+        <div class="input-group">
+            <span class="input-group-addon">Y坐标</span>
+            <input type="text" class="form-control" id="subY-coordinate" value="中心点Y坐标">
+            
+        </div>
+				 <div class="input-group">
+            <span class="input-group-addon">描述</span>
+            <input type="text" class="form-control" value="注释或描述" id="subDescription">
+        </div>
+        <div class="input-group">
+			<span class="input-group-addon">标签</span>
+            <input type="text" class="form-control" value="" id="subTag">
+            
+        </div>
+        <div class="input-group">
+            <span class="input-group-addon">雨量计</span>
+            <input type="text" class="form-control" value="1" id="subRaingage">
+            
+        </div>
+				  <div class="input-group">
+            <span class="input-group-addon">出水口</span>
+            <input type="text" class="form-control" value="*" id="subOutlet">
+        </div>
+        <div class="input-group">
+			<span class="input-group-addon">面积</span>
+            <input type="text" class="form-control" value="子汇水面积" id="subArea">
+            
+        </div>
+        <div class="input-group">
+            <span class="input-group-addon">宽度</span>
+            <input type="text" class="form-control" value="特征宽度" id="subWidth">
+            
+        </div>
+				 <div class="input-group">
+            <span class="input-group-addon">坡度(%)</span>
+            <input type="text" class="form-control" value="平均坡度" id="subSlope">
+        </div>
+        <div class="input-group">
+			<span class="input-group-addon">不渗透性(%)</span>
+            <input type="text" class="form-control" value="不渗透性" id="subImprev">
+            
+        </div>
+        <div class="input-group">
+            <span class="input-group-addon">不渗透曼宁系数</span>
+            <input type="text" class="form-control" value="不渗透面积曼宁系数" id="subImprevN">
+            
+        </div>
+		 <div class="input-group">
+            <span class="input-group-addon">渗透曼宁系数</span>
+            <input type="text" class="form-control" value="渗透面积曼宁系数" id="subPrevN">
+            
+        </div>
+		 <div class="input-group">
+            <span class="input-group-addon">不渗透蓄水深度</span>
+            <input type="text" class="form-control" value="不渗透面积洼地蓄水" id="subDstoreImprev">
+            
+        </div>
+		 <div class="input-group">
+            <span class="input-group-addon">渗透蓄水深度</span>
+            <input type="text" class="form-control" value="渗透洼地蓄水" id="subDstorePrev">
+            
+		</div>
+		<div class="input-group">
+            <span class="input-group-addon">非洼地不渗透性%</span>
+            <input type="text" class="form-control" value="25" id="subzeroImprev">
+            
+        </div>
+        <div class="input-group">
+            <span class="input-group-addon">演算百分比</span>
+            <input type="text" class="form-control" value="100" id="subPercentRoute">
+            
+        </div>
+		<div class="input-group">
+						<span class="input-group-addon">子面积演算</span>
+						</button>
+	<div class="form-group">
+		
+		<select class="form-control" id="subRoute">
+			<option>OUTLET</option>
+			<option>IMPERVIOUS</option>
+			<option>PERVIOUS</option>
+		</select>
+	</div>
+</div>
+
+		<!-- <div class="input-group"> -->
+            <!-- <span class="input-group-addon">下渗</span> -->
+            <!-- <!-- <input type="text" class="form-control" value="下渗模式选择" id="subInflitration"> -->
+		<!-- </div> --> 
+		<!-- </button> -->
+		<!-- <div class="form-group"> -->
+		
+			<!-- <select class="form-control" id="subInflitration" > -->
+				<!-- <option>HORTON</option> -->
+				<!-- <option>GREEN-AMPT</option> -->
+				<!-- <option>CURVE_NUMBER</option> -->
+			<!-- </select> -->
+		<!-- </div> -->
+<!-- </div> -->
+<div class="input-group">
+		<span class="input-group-addon">下渗</span>
+		<input type="text" class="form-control" value="HORTON" id="subInflitration">
+		<div class="input-group-btn">
+			<button type="button" class="btn default" onclick="choosesubInflitration(this)" tabindex="-1" style="width: 40px;height:34px">
+				. . .
+			</button>
+		</div><!-- /btn-group --> 
+	</div><!-- /input-group -->
+	
+		<div class="input-group">
+            <span class="input-group-addon">积雪</span>
+            <input type="text" class="form-control" value="积雪参数" id="subSnow">
+            
+        </div>
+		<div class="input-group">
+					<span class="input-group-addon">地下水</span>
+					<input type="text" class="form-control" value="NO" id="subGroundwater">
+					<div class="input-group-btn">
+						<button type="button" class="btn default" data-toggle="modal" data-target="#GroundwaterModal" tabindex="-1" style="width: 40px;height:34px">
+							. . .
+						</button>
+					</div><!-- /btn-group --> 
+				</div><!-- /input-group -->
+
+		 <div class="input-group">
+            <span class="input-group-addon">LID控制</span>
+            <input type="text" class="form-control" value="0" id="subLID">
+            
+        </div>
+		 <div class="input-group">
+            <span class="input-group-addon">土地利用</span>
+            <input type="text" class="form-control" value="0" id="subLanduse">
+            
+        </div>
+		 <div class="input-group">
+            <span class="input-group-addon">初始增长</span>
+            <input type="text" class="form-control" value="NONE" id="subBuildup">
+            
+        </div>
+		<div class="input-group">
+            <span class="input-group-addon">边石长度</span>
+            <input type="text" class="form-control" value="0" id="subCurbLength">
+            
+        </div>
+    </form>
+            <div class="modal-footer">  
+                <button type="button" class="btn btn-default" data-dismiss="modal" >关闭</button>  
+                <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="updateSub()">保存</button>  
+            </div>  
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal -->
+</div>
+<!--以上为子流域模态框----------------------------------------------------------------->
+	<div class="modal fade" id="nodeModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog" align="center" style="width: 362px;height:600px;overflow:auto;"; >
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+					&times;
+				</button>
+				<h4 class="modal-title" id="myModalLabel">
+					节点
+				</h4>
+			</div>
+			 <form class="bs-example bs-example-form" role="form">
+        <div class="input-group">
+            <span class="input-group-addon">名称</span>
+            <input type="text" class="form-control" value="节点名" id="nodeNames" value="ID">
+        </div>
+        <div class="input-group">
+			<span class="input-group-addon">X坐标</span>
+            <input type="text" class="form-control" id="nodeX-coordinate" value="中心点X坐标">
+            
+        </div>
+        <div class="input-group">
+            <span class="input-group-addon">Y坐标</span>
+            <input type="text" class="form-control" id="nodeY-coordinate" value="中心点Y坐标">
+            
+        </div>
+				 <div class="input-group">
+            <span class="input-group-addon">描述</span>
+            <input type="text" class="form-control" value="注释或描述" id="nodeDescription">
+        </div>
+        <div class="input-group">
+			<span class="input-group-addon">标签</span>
+            <input type="text" class="form-control" value="" id="nodeTag">
+            
+        </div>
+				<div class="input-group">
+					<span class="input-group-addon">进流量</span>
+					<input type="text" class="form-control" value="NO" id="nodeInflows">
+					<div class="input-group-btn">
+						<button type="button" class="btn default" data-toggle="modal" data-target="#nodeInflowsModal" tabindex="-1" style="width: 40px;height:34px">
+							. . .
+						</button>
+					</div><!-- /btn-group --> 
+				</div><!-- /input-group -->
+				  <div class="input-group">
+            <span class="input-group-addon">处理</span>
+            <input type="text" class="form-control" value="NO" id="nodeTreatment">
+        </div>
+        <div class="input-group">
+            <span class="input-group-addon">内底标高</span>
+            <input type="text" class="form-control" value="内底标高" id="nodeElevation">
+            
+        </div>
+				 <div class="input-group">
+            <span class="input-group-addon">最大深度</span>
+            <input type="text" class="form-control" value="节点最大深度" id="nodeDepth">
+        </div>
+        <div class="input-group">
+			<span class="input-group-addon">初始深度</span>
+            <input type="text" class="form-control" value="0" id="nodeInitialDepth">
+            
+        </div>
+        <div class="input-group">
+            <span class="input-group-addon">超载深度</span>
+            <input type="text" class="form-control" value="0" id="nodeSurcharge">
+            
+        </div>
+     <div class="input-group">
+            <span class="input-group-addon">积水面积</span>
+            <input type="text" class="form-control" value="节点积水面积" id="nodePonded">
+            
+        </div>
+		
+    </form>
+            <div class="modal-footer">  
+                <button type="button" class="btn btn-default" data-dismiss="modal" >关闭</button>  
+                <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="updateNode()">保存</button>  
+            </div>  
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal -->
+</div>
+	<!--以上为节点模态框----------------------------------------------------------------->
+<div class="modal fade" id="nodeInflowsModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog" align="center" style="width: 402px;height:640px;"; >
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+					×
+				</button>
+				<h4 class="modal-title" id="myModalLabel">
+					进流量
+				</h4>
+			</div>
+			<ul id="myTab" class="nav nav-tabs">
+	<li class="active">
+		<a href="#Direct" data-toggle="tab">
+			 直接进流
+		</a>
+	</li>
+	<li><a href="#DryWeather" data-toggle="tab">旱季进流</a></li>
+	<li><a href="#RDII" data-toggle="tab">RDII进流</a></li>
+</ul>
+<div id="myTabContent" class="tab-content active">
+<div class="tab-pane fade in active " id="Direct">
+<form class="form-horizontal">
+<div class="form-group">
+
+</div>
+<div class="form-group">
+<label for="inflowsConstituent" class="col-md-3 control-label">成分</label>
+<div class="col-md-5 col-md-offset-6">
+		
+		<select class="form-control">
+			<option>FLOW</option>
+			<option>2</option>
+			<option>3</option>
+			<option>4</option>
+			<option>5</option>
+		</select>
+	</div>
+</div>
+<div class="form-group">
+<label for="inflowsConstituent" class="col-md-3 control-label">基线</label>
+<div class="col-md-5 col-md-offset-6">
+<input type="text" class="form-control" id="inflowsBaseline" value="基线">
+</div>
+</div>
+<div class="form-group">
+<label for="inflowsConstituent" class="col-md-3 control-label">基线模式</label>
+<div class="col-md-5 col-md-offset-6">
+<input type="text" class="form-control" id="inflowsBaselinepattern" value="基线模式">
+</div>
+</div>
+<div class="form-group">
+<label for="inflowsConstituent" class="col-md-3 control-label">时间序列</label>
+<div class="col-md-5 col-md-offset-6">
+<input type="text" class="form-control" id="inflowsTimeseries" value="时间序列">
+</div>
+</div>
+<div class="form-group">
+<label for="inflowsConstituent" class="col-md-3 control-label">比例因子</label>
+<div class="col-md-5 col-md-offset-6">
+<input type="text" class="form-control" id="inflowsScaleFactor" value="比例因子">
+</div>
+</div>
+</form>
+</div>
+
+
+<div class="tab-pane fade" id="DryWeather">
+
+<form class="form-horizontal">
+<div class="form-group">
+
+</div>
+<div class="form-group">
+<label for="inflowsConstituent" class="col-md-3 control-label">成分</label>
+<div class="col-md-5 col-md-offset-6">
+		
+		<select class="form-control">
+			<option>FLOW</option>
+			<option>2</option>
+			<option>3</option>
+			<option>4</option>
+			<option>5</option>
+		</select>
+	</div>
+</div>
+<div class="form-group">
+<label for="inflowsAvgValue" class="col-md-3 control-label">均值</label>
+<div class="col-md-5 col-md-offset-6">
+<input type="text" class="form-control" id="inflowsAvgValue" value="均值">
+</div>
+</div>
+<div class="form-group">
+<label for="inflowsTime1" class="col-md-3 control-label">时间模式</label>
+<div class="col-md-5 col-md-offset-6">
+<input type="text" class="form-control" id="inflowsTimepattern1" value="时间模式">
+</div>
+</div>
+<div class="form-group">
+<label for="inflowsTimepattern2" class="col-md-3 control-label"></label>
+<div class="col-md-5 col-md-offset-6">
+<input type="text" class="form-control" id="inflowsTimepattern2" value="">
+</div>
+</div>
+<div class="form-group">
+<label for="inflowsTimepattern3" class="col-md-3 control-label"></label>
+<div class="col-md-5 col-md-offset-6">
+<input type="text" class="form-control" id="inflowsTimepattern3" value="">
+</div>
+</div>
+<div class="form-group">
+<label for="inflowsTimepattern4" class="col-md-3 control-label"></label>
+<div class="col-md-5 col-md-offset-6">
+<input type="text" class="form-control" id="inflowsTimepattern4" value="">
+</div>
+</div>
+</form>
+</div>
+
+	<div class="tab-pane fade" id="RDII">
+	<form class="form-horizontal">
+	<div class="form-group">
+</div>
+<div class="form-group">
+<label for="inflowsHydrograph" class="col-md-4 control-label">单位时间过程线</label>
+<div class="col-md-5 col-md-offset-6">
+		
+		<select class="form-control">
+			<option>FLOW</option>
+			<option>2</option>
+			<option>3</option>
+			<option>4</option>
+			<option>5</option>
+		</select>
+	</div>
+</div>
+<div class="form-group">
+<label for="inflowSewershedArea" class="col-md-4 control-label">排水汇水面积（英亩）</label>
+<div class="col-md-5 col-md-offset-6">
+<input type="text" class="form-control" id="nflowSewershedArea" value="0">
+</div>
+</div>
+</form>	
+</div>
+			<div class="modal-footer">  
+                <button type="button" class="btn btn-default" data-dismiss="modal" >关闭</button>  
+                <button type="button" class="btn btn-primary" onclick="updateNodeInflows()">保存</button>  
+            </div>  
+		</div>
+	</div>
+  </div>
+ </div>
+  	<!--以上为节点模态框----------------------------------------------------------------->
+		<div class="modal fade" id="outfallModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog" align="center" style="width: 362px;height:600px;overflow:auto;"; >
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+					&times;
+				</button>
+				<h4 class="modal-title" id="myModalLabel">
+					排放口
+				</h4>
+			</div>
+			 <form class="bs-example bs-example-form" role="form">
+        <div class="input-group">
+            <span class="input-group-addon">名称</span>
+            <input type="text" class="form-control" value="排放口名称" id="outfallNames" value="ID">
+        </div>
+        <div class="input-group">
+			<span class="input-group-addon">X坐标</span>
+            <input type="text" class="form-control" id="outfallX-coordinate" value="中心点X坐标">
+            
+        </div>
+        <div class="input-group">
+            <span class="input-group-addon">Y坐标</span>
+            <input type="text" class="form-control" id="outfallY-coordinate" value="中心点Y坐标">
+            
+        </div>
+				 <div class="input-group">
+            <span class="input-group-addon">描述</span>
+            <input type="text" class="form-control" value="注释或描述" id="outfallDescription">
+        </div>
+        <div class="input-group">
+			<span class="input-group-addon">标签</span>
+            <input type="text" class="form-control" value="" id="outfallTag">
+            
+        </div>
+				<div class="input-group">
+					<span class="input-group-addon">进流量</span>
+					<input type="text" class="form-control" value="NO" id="outfallInflows">
+					<div class="input-group-btn">
+						<button type="button" class="btn default" data-toggle="modal" data-target="#outfallInflowsModal" tabindex="-1" style="width: 40px;height:34px">
+							. . .
+						</button>
+					</div><!-- /btn-group --> 
+				</div><!-- /input-group -->
+				  <div class="input-group">
+            <span class="input-group-addon">处理</span>
+            <input type="text" class="form-control" value="NO" id="outfallTreatment">
+        </div>
+        <div class="input-group">
+            <span class="input-group-addon">内底标高</span>
+            <input type="text" class="form-control" value="0" id="outfallElevation">
+            
+        </div>
+			<div class="input-group">
+						<span class="input-group-addon">潮门</span>
+						</button>
+	<div class="form-group">
+		
+		<select class="form-control" id="outfallTideGate">
+			<option>YES</option>
+			<option>NO</option>
+		</select>
+	</div>
+</div>
+<div class="input-group">
+						<span class="input-group-addon">类型</span>
+						</button>
+	<div class="form-group">
+		
+		<select class="form-control" id="outfallType">
+			<option>FREE</option>
+			<option>NORMAL</option>
+			<option>FIXED</option>
+			<option>TIDAL</option>
+			<option>TIMESERIES</option>
+		</select>
+	</div>
+</div>
+        <div class="input-group">
+			<span class="input-group-addon">固定排放口</span>
+            <span class="input-group-addon"></span>
+        </div>
+		<div class="input-group">
+			<span class="input-group-addon">固定阶段</span>
+            <input type="label" class="form-control" value="0" id="outfallStage">
+        </div>
+        <div class="input-group">
+            <span class="input-group-addon">潮水排放口</span>
+            <span class="input-group-addon"></span>
+        </div>
+		<div class="input-group">
+            <span class="input-group-addon">曲线名</span>
+            <input type="label" class="form-control" value="" id="outfallCurve">
+        </div>
+     <div class="input-group">
+            <span class="input-group-addon">时间序列排放口</span>
+            <span class="input-group-addon"></span>
+            
+        </div>
+		<div class="input-group">
+            <span class="input-group-addon">序列名</span>
+            <input type="label" class="form-control" value="" id="outfallSeries">
+        </div>
+		
+    </form>
+            <div class="modal-footer">  
+                <button type="button" class="btn btn-default" data-dismiss="modal" >关闭</button>  
+                <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="updateOutfall()">保存</button>  
+            </div>  
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal -->
+</div>
+	<!--以上为排放口模态框----------------------------------------------------------------->
+<div class="modal fade" id="outfallInflowsModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog" align="center" style="width: 402px;height:640px;"; >
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+					×
+				</button>
+				<h4 class="modal-title" id="myModalLabel">
+					进流量
+				</h4>
+			</div>
+			<ul id="myTab" class="nav nav-tabs">
+	<li class="active">
+		<a href="#ofDirect" data-toggle="tab">
+			 直接进流
+		</a>
+	</li>
+	<li><a href="#ofDryWeather" data-toggle="tab">旱季进流</a></li>
+	<li><a href="#ofRDII" data-toggle="tab">RDII进流</a></li>
+</ul>
+<div id="myTabContent" class="tab-content active">
+<div class="tab-pane fade in active " id="ofDirect">
+<form class="form-horizontal">
+<div class="form-group">
+
+</div>
+<div class="form-group">
+<label for="inflowsConstituent" class="col-md-3 control-label">成分</label>
+<div class="col-md-5 col-md-offset-6">
+		
+		<select class="form-control">
+			<option>FLOW</option>
+			<option>2</option>
+			<option>3</option>
+			<option>4</option>
+			<option>5</option>
+		</select>
+	</div>
+</div>
+<div class="form-group">
+<label for="inflowsConstituent" class="col-md-3 control-label">基线</label>
+<div class="col-md-5 col-md-offset-6">
+<input type="text" class="form-control" id="ofinflowsBaseline" value="基线">
+</div>
+</div>
+<div class="form-group">
+<label for="inflowsConstituent" class="col-md-3 control-label">基线模式</label>
+<div class="col-md-5 col-md-offset-6">
+<input type="text" class="form-control" id="ofinflowsBaselinepattern" value="基线模式">
+</div>
+</div>
+<div class="form-group">
+<label for="inflowsConstituent" class="col-md-3 control-label">时间序列</label>
+<div class="col-md-5 col-md-offset-6">
+<input type="text" class="form-control" id="ofinflowsTimeseries" value="时间序列">
+</div>
+</div>
+<div class="form-group">
+<label for="inflowsConstituent" class="col-md-3 control-label">比例因子</label>
+<div class="col-md-5 col-md-offset-6">
+<input type="text" class="form-control" id="ofinflowsScaleFactor" value="1.0">
+</div>
+</div>
+</form>
+</div>
+
+
+<div class="tab-pane fade" id="ofDryWeather">
+
+<form class="form-horizontal">
+<div class="form-group">
+
+</div>
+<div class="form-group">
+<label for="inflowsConstituent" class="col-md-3 control-label">成分</label>
+<div class="col-md-5 col-md-offset-6">
+		
+		<select class="form-control">
+			<option>FLOW</option>
+			<option>2</option>
+			<option>3</option>
+			<option>4</option>
+			<option>5</option>
+		</select>
+	</div>
+</div>
+<div class="form-group">
+<label for="inflowsAvgValue" class="col-md-3 control-label">均值</label>
+<div class="col-md-5 col-md-offset-6">
+<input type="text" class="form-control" id="ofinflowsAvgValue" value="均值">
+</div>
+</div>
+<div class="form-group">
+<label for="inflowsTime1" class="col-md-3 control-label">时间模式</label>
+<div class="col-md-5 col-md-offset-6">
+<input type="text" class="form-control" id="ofinflowsTimepattern1" value="时间模式">
+</div>
+</div>
+<div class="form-group">
+<label for="inflowsTimepattern2" class="col-md-3 control-label"></label>
+<div class="col-md-5 col-md-offset-6">
+<input type="text" class="form-control" id="ofinflowsTimepattern2" value="">
+</div>
+</div>
+<div class="form-group">
+<label for="inflowsTimepattern3" class="col-md-3 control-label"></label>
+<div class="col-md-5 col-md-offset-6">
+<input type="text" class="form-control" id="ofinflowsTimepattern3" value="">
+</div>
+</div>
+<div class="form-group">
+<label for="inflowsTimepattern4" class="col-md-3 control-label"></label>
+<div class="col-md-5 col-md-offset-6">
+<input type="text" class="form-control" id="ofinflowsTimepattern4" value="">
+</div>
+</div>
+</form>
+</div>
+
+	<div class="tab-pane fade" id="ofRDII">
+	<form class="form-horizontal">
+	<div class="form-group">
+</div>
+<div class="form-group">
+<label for="inflowsHydrograph" class="col-md-4 control-label">单位时间过程线</label>
+<div class="col-md-5 col-md-offset-6">
+		
+		<select class="form-control">
+			<option>FLOW</option>
+			<option>2</option>
+			<option>3</option>
+			<option>4</option>
+			<option>5</option>
+		</select>
+	</div>
+</div>
+<div class="form-group">
+<label for="ofinflowSewershedArea" class="col-md-4 control-label">排水汇水面积（英亩）</label>
+<div class="col-md-5 col-md-offset-6">
+<input type="text" class="form-control" id="ofinflowSewershedArea" value="0">
+</div>
+</div>
+</form>	
+</div>
+			<div class="modal-footer">  
+                <button type="button" class="btn btn-default" data-dismiss="modal" >关闭</button>  
+                <button type="button" class="btn btn-primary" onclick="updateofInflows()">保存</button>  
+            </div>  
+		</div>
+	</div>
+  </div>
+ </div>
+  	<!--以上为排放口模态框----------------------------------------------------------------->
+  	<div class="modal fade" id="pipeModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog" align="center" style="width: 362px;height:500px;overflow:auto;"; >
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+					&times;
+				</button>
+				<h4 class="modal-title" id="myModalLabel">
+					管道
+				</h4>
+			</div>
+			 <form class="bs-example bs-example-form" role="form">
+        <div class="input-group">
+            <span class="input-group-addon">名称</span>
+            <input type="text" class="form-control" value="管道名" id="pipeName" value="ID">
+        </div>
+        <div class="input-group">
+			<span class="input-group-addon">进水节点</span>
+            <input type="text" class="form-control" id="pipeInletNode" value="管渠进水端节点名">
+            
+        </div>
+        <div class="input-group">
+            <span class="input-group-addon">出水节点</span>
+            <input type="text" class="form-control" id="pipeOutletNode" value="管渠出水端节点名">
+            
+        </div>
+				 <div class="input-group">
+            <span class="input-group-addon">描述</span>
+            <input type="text" class="form-control" value="注释或描述" id="pipeDescription">
+        </div>
+        <div class="input-group">
+			<span class="input-group-addon">标签</span>
+            <input type="text" class="form-control" value="可选分类" id="pipeTag">
+            
+        </div>
+				<div class="input-group">
+					<span class="input-group-addon">管渠形状</span>
+					<input type="text" class="form-control" value="管渠形状" id="pipeShape">
+					<div class="input-group-btn">
+						<button type="button" class="btn default" data-toggle="modal" data-target="#pipeShapeModal" tabindex="-1" style="width: 40px;height:34px">
+							. . .
+						</button>
+					</div><!-- /btn-group --> 
+				</div><!-- /input-group -->
+		<div class="input-group">
+            <span class="input-group-addon">最大深度</span>
+            <input type="text" class="form-control" value="1" id="pipeDepth">
+        </div>
+		<div class="input-group">
+            <span class="input-group-addon">长度</span>
+            <input type="text" class="form-control" value="管渠长度" id="pipeLength">
+        </div>
+        <div class="input-group">
+            <span class="input-group-addon">粗糙系数</span>
+            <input type="text" class="form-control" value="管渠粗糙系数" id="pipeRoughness">
+            
+        </div>
+		
+        <div class="input-group">
+			<span class="input-group-addon">进水偏移</span>
+            <input type="text" class="form-control" value="0" id="pipeInletOffset">
+            
+        </div>
+        <div class="input-group">
+            <span class="input-group-addon">出水偏移</span>
+            <input type="text" class="form-control" value="0" id="pipeOutletOffset">
+            
+        </div>
+     <div class="input-group">
+            <span class="input-group-addon">初始流量</span>
+            <input type="text" class="form-control" value="0" id="pipeInitialFlow">
+            
+        </div>
+		     <div class="input-group">
+			<span class="input-group-addon">最大流量</span>
+            <input type="text" class="form-control" value="0" id="pipeMaxFlow">
+            
+        </div>
+        <div class="input-group">
+            <span class="input-group-addon">进口损失系数</span>
+            <input type="text" class="form-control" value="0" id="pipeEntryLoss">
+            
+        </div>
+     <div class="input-group">
+            <span class="input-group-addon">出口损失系数</span>
+            <input type="text" class="form-control" value="0" id="pipeExitLoss">
+            
+        </div>
+		     <div class="input-group">
+			<span class="input-group-addon">平均损失系数</span>
+            <input type="text" class="form-control" value="0" id="pipeAvgLoss">
+            
+        </div>
+		<div class="input-group">
+						<span class="input-group-addon">拍门</span>
+						</button>
+	<div class="form-group">
+		
+		<select class="form-control" id="pipeFlapGate">
+			<option>YES</option>
+			<option>NO</option>
+		</select>
+	</div>
+</div>
+     <div class="input-group">
+            <span class="input-group-addon">涵洞代号</span>
+            <input type="text" class="form-control" value="涵洞类型代码" id="pipeCulvetCode">
+            
+        </div>
+    </form>
+            <div class="modal-footer">  
+                <button type="button" class="btn btn-default" data-dismiss="modal" >关闭</button>  
+                <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="updatePipe()">保存</button>  
+            </div>  
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal -->
+</div>	
+<!--以上为管道模态框----------------------------------------------------------------->
+	<div class="modal fade" id="openDataModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog" align="center" style="width: 362px;height:600px;overflow:auto;"; >
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+					&times;
+				</button>
+				<h4 class="modal-title" id="myModalLabel">
+					导入数据
+				</h4>
+</div>
+			 <form class="bs-example bs-example-form" role="form">
+ 
+
+<input id="lefile2" type="file" onchange="importPointInfo(this)" style="display:none">  
+<div class="input-append">  
+    <input id="nodeCover" class="input-large" type="text"  style="height:30px;">  
+    <a class="btn" onclick="$('input[id=lefile2]').click();">打开节点文件</a>  
+</div>  
+<input id="lefile3" type="file" onchange="importPipeInfo(this)" style="display:none">  
+<div class="input-append">  
+    <input id="pipeCover" class="input-large" type="text"  style="height:30px;">  
+    <a class="btn" onclick="$('input[id=lefile3]').click();">打开管道文件</a>  
+</div>  
+		</form>
+            <div class="modal-footer">  
+                <button type="button" class="btn btn-default" data-dismiss="modal" >关闭</button>  
+                <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="">保存</button>  
+            </div>  	
+	  </div><!-- /.modal-content -->
+  </div><!-- /.modal -->
+</div>
+<!--以上为打开文件 -->
+	<div class="modal fade" id="openSimulationModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog" align="center" style="width: 362px;height:600px;overflow:auto;"; >
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+					&times;
+				</button>
+				<h4 class="modal-title" id="myModalLabel">
+					模拟数据
+				</h4>
+</div>
+			 <form class="bs-example bs-example-form" role="form">
+ 
+<input id="lefile1" type="file" onchange="importNodeRInfo(this)" style="display:none">  
+<div class="input-append">  
+    <input id="nodeRCover" class="input-large" type="text"  style="height:30px;">  
+    <a class="btn" onclick="$('input[id=lefile1]').click();">打开节点结果</a>  
+</div>
+<input id="lefile5" type="file" onchange="importPipeRInfo(this)" style="display:none">  
+<div class="input-append">  
+    <input id="pipeRCover" class="input-large" type="text"  style="height:30px;">  
+    <a class="btn" onclick="$('input[id=lefile5]').click();">打开管道结果</a>  
+</div>  
+<input id="lefile4" type="file" onchange="importResultInfo(this)"  style="display:none">  
+<div class="input-append">  
+    <input id="resultCover" class="input-large" type="text" style="height:30px;">  
+    <a class="btn" onclick="$('input[id=lefile4]').click();">打开积水分布</a>  
+</div>  
+		</form>
+            <div class="modal-footer">  
+                <button type="button" class="btn btn-default" data-dismiss="modal" >关闭</button>  
+                <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="">保存</button>  
+            </div>  	
+	  </div><!-- /.modal-content -->
+  </div><!-- /.modal -->
+</div>
+<!--以上为模拟文件 -->
+<div class="modal fade" id="defaultsModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog" align="center" style="width: 342px;height:500px;overflow:auto;"; >
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+					&times;
+				</button>
+				<h4 class="modal-title" id="myModalLabel">
+					工程缺省
+				</h4>
+			</div>
+			<ul id="myTab" class="nav nav-tabs">
+	<li class="active">
+		<a href="#subdefault" data-toggle="tab">
+			 子汇水面积
+		</a>
+	</li>
+	<li><a href="#nodepipedefault" data-toggle="tab">节点管段</a></li>
+</ul>
+<div id="myTabContent" class="tab-content active">
+<div class="tab-pane fade in active " id="subdefault">
+<form class="form-horizontal">
+<div class="form-group">
+
+</div>
+<div class="input-group">
+	<span class="input-group-addon">面积</span>
+	<input type="text" class="form-control" value="5" id="defaultsubArea">
+	
+</div>
+<div class="input-group">
+	<span class="input-group-addon">宽度</span>
+	<input type="text" class="form-control" value="500" id="defaultsubWidth">
+	
+</div>
+ <div class="input-group">
+	<span class="input-group-addon">坡度(%)</span>
+	<input type="text" class="form-control" value="0.5" id="defaultsubSlope">
+</div>
+<div class="input-group">
+	<span class="input-group-addon">不渗透性(%)</span>
+	<input type="text" class="form-control" value="25" id="defaultsubImprev">
+	
+</div>
+<div class="input-group">
+	<span class="input-group-addon">不渗透曼宁系数</span>
+	<input type="text" class="form-control" value="0.01" id="defaultsubImprevN">
+	
+</div>
+ <div class="input-group">
+	<span class="input-group-addon">渗透曼宁系数</span>
+	<input type="text" class="form-control" value="0.1" id="defaultsubPrevN">
+	
+</div>
+ <div class="input-group">
+	<span class="input-group-addon">不渗透蓄水深度</span>
+	<input type="text" class="form-control" value="0.05" id="defaultsubDstoreImprev">
+	
+</div>
+ <div class="input-group">
+	<span class="input-group-addon">渗透蓄水深度</span>
+	<input type="text" class="form-control" value="0.05" id="defaultsubDstorePrev">
+	
+</div>
+<div class="input-group">
+	<span class="input-group-addon">非洼地不渗透性%</span>
+	<input type="text" class="form-control" value="25" id="defaultsubDstorePrev">
+	
+</div>
+
+
+<div class="input-group">
+		<span class="input-group-addon">下渗</span>
+		<input type="text" class="form-control" value="HORTON" id="defaultsubInflitration">
+		<div class="input-group-btn">
+			<button type="button" class="btn default" onclick="choosesubdefaultInflitration(this)" tabindex="-1" style="width: 40px;height:34px">
+				. . .
+			</button>
+		</div><!-- /btn-group --> 
+	</div><!-- /input-group -->
+
+</form>
+</div>
+ 
+<div class="tab-pane fade" id="nodepipedefault">
+<form class="form-horizontal">
+<div class="form-group">
+
+</div>
+<div class="form-group">
+
+</div>
+	<div class="input-group">
+		<span class="input-group-addon">节点内底</span>
+		<input type="text" class="form-control" value="0" id="defaultnodeInvert">
+		
+	</div>
+	<div class="input-group">
+		<span class="input-group-addon">节点最大深度</span>
+		<input type="text" class="form-control" value="0" id="defaultnodeMaxdepth">
+		
+	</div>
+	 <div class="input-group">
+		<span class="input-group-addon">节点积水面积</span>
+		<input type="text" class="form-control" value="0" id="defaultnodePonded">
+	</div>
+	<div class="input-group">
+		<span class="input-group-addon">管渠长度</span>
+		<input type="text" class="form-control" value="400" id="defaultpipeLength">
+		
+	</div>
+	<div class="input-group">
+		<span class="input-group-addon">管渠几何特性</span>
+		<input type="text" class="form-control" value="CIRCULAR" id="defaultpipeShape">
+		
+	</div>
+	 <div class="input-group">
+		<span class="input-group-addon">管渠粗糙系数</span>
+		<input type="text" class="form-control" value="0.01" id="defaultpipeRoughness">
+		
+	</div>
+	 <div class="input-group">
+		<span class="input-group-addon">管段偏移</span>
+		<input type="text" class="form-control" value="DEPTH" id="defaultsubDstoreImprev">
+		
+	</div>
+<div class="input-group">
+			<span class="input-group-addon">演算方法</span>
+			</button>
+   
+
+<select class="form-control" id="defaultRoutingMethod">
+<option>动力波</option>
+<option>运动波</option>
+<option>恒定流</option>
+</select>
+    
+</div>
+
+<div class="input-group">
+	<span class="input-group-addon">压力干管公式</span>
+	</button>
+	
+
+<select class="form-control" id="defaultForceMainEq">
+<option>海曾·威廉</option>
+<option>达西·斯巴达赫</option>
+</select>
+
+</div>
+</form>
+</div>
+			<div class="modal-footer">  
+                <button type="button" class="btn btn-default" data-dismiss="modal" >关闭</button>  
+                <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="updatedefault()">保存</button>  
+            </div>  
+		</div>
+	</div>
+  </div>
+ </div>
+ <!-- -->
+ <div>
+ <div class="modal fade" id="defaultsubInflitrationModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog" align="center" style="width: 362px;height:500px;overflow:auto;"; >
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+						&times;
+					</button>
+					<h4 class="modal-title" id="myModalLabel">
+						HORTON
+					</h4>
+				</div>
+				 <form class="bs-example bs-example-form" role="form">
+						<div class="input-group">
+								<select class="form-control" id="Hinflitration" onchange="selectOnchangH(this)">
+									<option value="HORTON" selected>HORTON</option>
+									<option value="GREEN-AMPT">GREEN-AMPT</option>
+									<option value="CURVE_NUMBER">CURVE_NUMBER</option>
+								</select>
+
+							</div>
+							
+			<div class="input-group">
+				<span class="input-group-addon">最大渗入速率</span>
+				<input type="text" class="form-control"  id="defaultMaxInfliRate" value="3.0">
+			</div>
+			<div class="input-group">
+				<span class="input-group-addon">最小渗入速率</span>
+				<input type="text" class="form-control" id="defaultMinInfliRate" value="0.5">
+				
+			</div>
+			<div class="input-group">
+				<span class="input-group-addon">衰减常数</span>
+				<input type="text" class="form-control" id="defaultDecay" value="4">
+				
+			</div>
+					 <div class="input-group">
+				<span class="input-group-addon">排干时间</span>
+				<input type="text" class="form-control" value="7" id="defaultDryingtime">
+			</div>
+			<div class="input-group">
+				<span class="input-group-addon">最大容积</span>
+				<input type="text" class="form-control" value="0" id="defaultMaxVolume">
+				
+			</div>
+
+				<div class="modal-footer">  
+					<button type="button" class="btn btn-default" data-dismiss="modal" >关闭</button>  
+					<button type="button" class="btn btn-primary" data-dismiss="modal" onclick="updateHorton()">保存</button>  
+				</div>  
+			</div><!-- /.modal-content -->
+		</div><!-- /.modal -->
+	</div>	
+	</div>
+<!-- -->
+ <!-- -->
+ <div>
+ <div class="modal fade" id="defaultsubGreenModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog" align="center" style="width: 362px;height:500px;overflow:auto;"; >
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+						&times;
+					</button>
+					<h4 class="modal-title" id="myModalLabel">
+						GREEN-AMPT
+					</h4>
+				</div>
+				 <form class="bs-example bs-example-form" role="form">
+						<div class="input-group">
+						<select class="form-control" id="Ginflitration" onchange="selectOnchangG(this)">
+									
+									<option value="HORTON">HORTON</option>
+									<option value="GREEN-AMPT" selected>GREEN-AMPT</option>
+									<option value="CURVE_NUMBER">CURVE_NUMBER</option>
+								</select>	
+			<div class="input-group">
+				<span class="input-group-addon">吸入水头</span>
+				<input type="text" class="form-control"  id="defaultSuctionHead" value="3.5">
+			</div>
+			<div class="input-group">
+				<span class="input-group-addon">导水率</span>
+				<input type="text" class="form-control" id="defaultGreenConductivity" value="0.5">
+				
+			</div>
+			<div class="input-group">
+				<span class="input-group-addon">初始亏损</span>
+				<input type="text" class="form-control" id="defaultInitialDeficit" value="0.25">
+				
+			</div>
+
+
+				<div class="modal-footer">  
+					<button type="button" class="btn btn-default" data-dismiss="modal" >关闭</button>  
+					<button type="button" class="btn btn-primary" data-dismiss="modal" onclick="updateGreen()">保存</button>  
+				</div>  
+			</div><!-- /.modal-content -->
+		</div><!-- /.modal -->
+	</div>	
+	</div>
+<!-- -->
+ <!-- -->
+ <div>
+ <div class="modal fade" id="defaultsubCurveModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog" align="center" style="width: 362px;height:500px;overflow:auto;"; >
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+						&times;
+					</button>
+					<h4 class="modal-title" id="myModalLabel">
+						CURVE_NUMBER
+					</h4>
+				</div>
+				 <form class="bs-example bs-example-form" role="form">
+						<div class="input-group">
+							<select class="form-control" id="Cinflitration" onchange="selectOnchangC(this)">
+									
+									<option value="HORTON">HORTON</option>
+									<option value="GREEN-AMPT" >GREEN-AMPT</option>
+									<option value="CURVE_NUMBER" selected>CURVE_NUMBER</option>
+								</select>	
+			<div class="input-group">
+				<span class="input-group-addon">曲线率</span>
+				<input type="text" class="form-control"  id="defaultCurveNumber" value="80">
+			</div>
+			<div class="input-group">
+				<span class="input-group-addon">导水率</span>
+				<input type="text" class="form-control" id="defaultConductivity" value="0.5">
+				
+			</div>
+					 <div class="input-group">
+				<span class="input-group-addon">排干时间</span>
+				<input type="text" class="form-control" value="7" id="defaultcurveDryingtime">
+			</div>
+
+
+				<div class="modal-footer">  
+					<button type="button" class="btn btn-default" data-dismiss="modal" >关闭</button>  
+					<button type="button" class="btn btn-primary" data-dismiss="modal" onclick="updateCurve()">保存</button>  
+				</div>  
+			</div><!-- /.modal-content -->
+		</div><!-- /.modal -->
+	</div>	
+</div>
+<!-- -->
+<div>
+ <div class="modal fade" id="subInflitrationModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog" align="center" style="width: 362px;height:500px;overflow:auto;"; >
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+						&times;
+					</button>
+					<h4 class="modal-title" id="myModalLabel">
+						HORTON
+					</h4>
+				</div>
+							
+			<div class="input-group">
+				<span class="input-group-addon">最大渗入速率</span>
+				<input type="text" class="form-control"  id="subMaxInfliRate" value="3.0">
+			</div>
+			<div class="input-group">
+				<span class="input-group-addon">最小渗入速率</span>
+				<input type="text" class="form-control" id="subMinInfliRate" value="0.5">
+				
+			</div>
+			<div class="input-group">
+				<span class="input-group-addon">衰减常数</span>
+				<input type="text" class="form-control" id="subDecay" value="4">
+				
+			</div>
+					 <div class="input-group">
+				<span class="input-group-addon">排干时间</span>
+				<input type="text" class="form-control" value="7" id="subDryingtime">
+			</div>
+			<div class="input-group">
+				<span class="input-group-addon">最大容积</span>
+				<input type="text" class="form-control" value="0" id="subMaxVolume">
+				
+			</div>
+
+				<div class="modal-footer">  
+					<button type="button" class="btn btn-default" data-dismiss="modal" >关闭</button>  
+					<button type="button" class="btn btn-primary" data-dismiss="modal" onclick="updatesubHorton()">保存</button>  
+				</div>  
+			</div><!-- /.modal-content -->
+		</div><!-- /.modal -->
+	</div>	
+	</div>
+<!-- -->
+ <!-- -->
+ <div>
+ <div class="modal fade" id="subGreenModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog" align="center" style="width: 362px;height:500px;overflow:auto;"; >
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+						&times;
+					</button>
+					<h4 class="modal-title" id="myModalLabel">
+						GREEN-AMPT
+					</h4>
+				</div>
+			<div class="input-group">
+				<span class="input-group-addon">吸入水头</span>
+				<input type="text" class="form-control"  id="subSuctionHead" value="3.5">
+			</div>
+			<div class="input-group">
+				<span class="input-group-addon">导水率</span>
+				<input type="text" class="form-control" id="subGreenConductivity" value="0.5">
+				
+			</div>
+			<div class="input-group">
+				<span class="input-group-addon">初始亏损</span>
+				<input type="text" class="form-control" id="subInitialDeficit" value="0.25">
+				
+			</div>
+
+
+				<div class="modal-footer">  
+					<button type="button" class="btn btn-default" data-dismiss="modal" >关闭</button>  
+					<button type="button" class="btn btn-primary" data-dismiss="modal" onclick="updatesubGreen()">保存</button>  
+				</div>  
+			</div><!-- /.modal-content -->
+		</div><!-- /.modal -->
+	</div>	
+	</div>
+<!-- -->
+ <!-- -->
+ <div>
+ <div class="modal fade" id="subCurveModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog" align="center" style="width: 362px;height:500px;overflow:auto;"; >
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+						&times;
+					</button>
+					<h4 class="modal-title" id="myModalLabel">
+						CURVE_NUMBER
+					</h4>
+				</div>
+			<div class="input-group">
+				<span class="input-group-addon">曲线率</span>
+				<input type="text" class="form-control"  id="subCurveNumber" value="80">
+			</div>
+			<div class="input-group">
+				<span class="input-group-addon">导水率</span>
+				<input type="text" class="form-control" id="subConductivity" value="0.5">
+				
+			</div>
+					 <div class="input-group">
+				<span class="input-group-addon">排干时间</span>
+				<input type="text" class="form-control" value="7" id="subcurveDryingtime">
+			</div>
+
+
+				<div class="modal-footer">  
+					<button type="button" class="btn btn-default" data-dismiss="modal" >关闭</button>  
+					<button type="button" class="btn btn-primary" data-dismiss="modal" onclick="updatesubCurve()">保存</button>  
+				</div>  
+			</div><!-- /.modal-content -->
+		</div><!-- /.modal -->
+	</div>	
+</div>
+<div class="modal fade" id="groupeditModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog" align="center" style="width: 342px;height:500px;overflow:auto;"; >
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+					&times;
+				</button>
+				<h4 class="modal-title" id="myModalLabel">
+					批量编辑
+				</h4>
+			</div>
+
+<div class="input-group">
+			<span class="input-group-addon">对象类型</span>
+			</button>
+
+
+<select class="form-control" id="objecttype" onchange="toChange(this, 'selections')">
+<option>子汇水面积</option>
+<option>下渗</option>
+<option>节点</option>
+<option>蓄水设施</option>
+<option>管渠</option>
+</select>
+
+
+</div>
+
+
+
+ <div class="input-group">
+		<span class="input-group-addon"><input type="checkbox" id="tagcheck"> 标签等于</span>
+		<input type="text" class="form-control" value="" id="tagequal">
+</div>
+	
+
+
+
+
+
+<div class="input-group">
+	<span class="input-group-addon">编辑属性</span>
+	</button>
+	
+
+<select class="form-control" id="selections">
+<option>标签</option>
+<option>雨量计</option>
+<option>面积</option>
+<option>宽度</option>
+<option>坡度（%）</option>
+<option>不渗透性（%）</option>
+<option>不渗透性粗糙系数N值</option>
+<option>渗透性粗糙系数N值</option>
+<option>不渗透性洼地蓄水</option>
+<option>渗透性洼地蓄水</option>
+<option>无洼地蓄水不渗透性（%）</option>
+<option>土地利用</option>
+<option>边石长度</option>
+<option>积雪</option>
+<option>地下水</option>
+</select>
+
+</div>
+	 <div class="input-group">
+		<span class="input-group-addon">将其替换为</span>
+		<input type="text" class="form-control" value="" id="replace">
+		
+	</div>
+			<div class="modal-footer">  
+                <button type="button" class="btn btn-default" data-dismiss="modal" >关闭</button>  
+                <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="updategroup()">保存</button>  
+            </div>  
+		</div>
+	</div>
+  </div>
+ </div>
+
+
+
+
+
+<!-- -->
+ </body>
+ <script type="text/javascript">  
+
+
+	$('input[id=lefile1]').change(function() {  
+	$('#nodeRCover').val($(this).val());  
+	});  
+	$('input[id=lefile2]').change(function() {  
+	$('#nodeCover').val($(this).val());  
+	});  
+	
+	$('input[id=lefile3]').change(function() {  
+	$('#pipeCover').val($(this).val());  
+	});  
+		$('input[id=lefile4]').change(function() {  
+	$('#resultCover').val($(this).val());  
+	}); 
+	$('input[id=lefile5]').change(function() {  
+	$('#pipeRCover').val($(this).val());  
+	}); 
+	</script>  
+   <script>
+   //变量
+   var drawLineArr=new Array();var canvas2 = document.createElement("canvas");
+   var uri = 'data:application/vnd.ms-excel;base64,';
+   var allSub='';var areArr=new Array();var pixelArr=new Array();var pipeArr=new Array();var subArr=new Array();var nodesArr=new Array();var outfallArr=new Array();
+   var allPipe='';	var allNode='';	var allOutfall='';var ID=1;var IDlabel=new Array();var thisclick=null;var defaults=new Array();
+		var markers=[],polylines=[],polygons=[],boundarys=[];
+   //--------------------------------------------------------------------------------------
+
+	var map = new AMap.Map('mapcontainer', {
+        resizeEnable: true,
+        zoom:11,
+		features : ['bg', 'point'],
+		 layers: [new AMap.TileLayer.Satellite()],
+		 zoom:14,
+		 center:[118.79484,32.054227],
+		labelzIndex:1
+    });
+	window.map = map;
+	setdefaults();
+	//在地图中添加MouseTool插件
+    var mouseTool = new AMap.MouseTool(map);
+var normalMap;
+    //搜索输入提示
+	$("#tools").append("<input id='tipinput' value='搜索' style=\"font-size: 10px;height:29px;width:130px;box-shadow:2px 2px 2px #000;\"/>  "); 
+	var autoOptions = new AMap.Autocomplete({
+        input: "tipinput"
+    });
+    //选择提示自动搜索
+	var auto = new AMap.Autocomplete(autoOptions);
+    var placeSearch = new AMap.PlaceSearch({ map: map }); 
+    AMap.event.addListener(auto, "select", select);//注册监听，当选中某条记录时会触发
+    function select(e) {
+        
+		placeSearch.setCity(e.poi.adcode);
+        placeSearch.search(e.poi.name);  //关键字查询
+    }
+
+    //回车搜索
+	$(function(){ 
+     $("#tipinput").keydown(function(e) {  
+          if (e.keyCode == '13') {  
+            placeSearch.search($("#tipinput").val());  //关键字查询 
+          }  
+     }); 
+	});
+	 $("#tools").append("<input type='button' class='button' value='坐标搜索' id='searchByLngLat'/>");
+    AMap.event.addDomListener($('#searchByLngLat').get(0), 'click', function() {
+		if($("#searchByLngLat").val() == "坐标搜索"){
+	       $("#searchByLngLat").val("地址搜索");
+
+		if($("#LngLatpool").is(":hidden")){
+	       $('#LngLatpool').show();
+		}else{
+		   $('#LngLatpool').hide();
+		}
+		}
+		else{
+		   $("#searchByLngLat").val("坐标搜索");
+		/*   <!-- if($("#LngLatpool").is(":hidden")){ -->
+	       <!-- $('#LngLatpool').show(); -->
+		<!-- }else{ -->
+		   <!-- $('#LngLatpool').hide(); -->
+		<!-- } -->*/
+		}
+    }, false);
+		//搜索按钮
+	 $("#tools").append("<input type='button' class='button' value='搜索' id='search'/>");
+	 AMap.event.addDomListener($('#search').get(0), 'click', function() {
+	 if($("#searchByLngLat").val() == "地址搜索")
+	 {
+	  placeSearch.search($("#tipinput").val());
+	 }
+    else
+	{
+    var zb=$("#tipinput").val();
+	lnglat = zb.split(",");
+	lng = Number(lnglat[0]);
+	lat = Number(lnglat[1]);
+	if($('input[value="baidu"]:checked'))
+	{
+	zb=bd09togcj02(lng,lat);
+	lnglat = zb;
+	}
+	else{lnglat = new AMap.LngLat(lng, lat);}
+	var markerzb= new AMap.Marker({ //添加自定义点标记
+        map: map,
+        position:lnglat , //基点位置
+        draggable: false //是否可拖动 
+
+}); 
+	map.setFitView();
+	}
+    }, false);
+	
+    $("#tools").append("<input type='button' class='button' value='查坐标' id='getLngLat'/>");
+	var _onclick=function(e) {
+        alert('百度坐标系： '+gcj02tobd09(e.lnglat.getLng(),e.lnglat.getLat())+'                                                     高德坐标系： '+e.lnglat.getLng() + ',' + e.lnglat.getLat());
+       };
+    AMap.event.addDomListener($('#getLngLat').get(0), 'click', function() {
+		if($("#getLngLat").val() == "查坐标"){
+	       $("#getLngLat").val("取消");
+		   mouseTool.close();//取消鼠标的其他操作绑定
+           map.on('click',_onclick);
+		}else{
+		   $("#getLngLat").val("查坐标");
+           map.off('click',_onclick);
+		}
+    }, false);
+
+    //显示比例尺
+    map.addControl(new AMap.Scale());
+
+	//右下角添加当前地图缩放级别
+	$("#setmap").prepend("<span id='info'></span>"); 
+	$("#info").html(map.getZoom());
+	AMap.event.addListener(map,'zoomend',function(){
+        $("#info").html(map.getZoom());
+    });
+var deleteID=null;
+
+//快捷键 截图
+keymage("shift-c",function() {
+
+$('#addOutfall').click();
+
+})
+
+//快捷键 增加节点
+keymage("shift-a",function() {
+$('#addNode').click();
+})
+//快捷键 管道绘制
+keymage("shift-x",function() {
+$('#drawLine').click();
+})
+//快捷键 子流域绘制
+keymage("shift-z",function() {
+$('#drawSub').click();
+})
+//快捷键 ID显示
+keymage("shift-s",function() {
+$('#showID').click();
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//清除标记 
+ AMap.event.addListener(map, "rightclick", function()
+ {
+ var alloverlaysList = map.getAllOverlays();
+ $.each(alloverlaysList, function (k) {
+     alloverlaysList[k].on('rightclick', function (e) 
+	{	
+	thisclick=alloverlaysList[k];
+	var deleteID=thisclick.getExtData()['ID'];
+	var contextMenu = new AMap.ContextMenu();  //创建右键菜单
+    //清除覆盖物
+	if(alloverlaysList[k].CLASS_NAME=='AMap.Polygon')
+	{
+    contextMenu.addItem("清除标记", function() {
+     
+	 
+	 delete subArr['Subcatchment{0}'.Format({0:deleteID})];
+	 
+	
+	 thisclick.setMap(null);
+    }, 0);
+    //右键清除所有标记
+    contextMenu.addItem("清除所有标记", function() {
+        map.clearMap();
+		subArr=[];
+		pipeArr=[];
+		nodesArr=[];
+		outfallArr=[];
+    }, 1);
+	//编辑覆盖物
+	contextMenu.addItem("边界编辑", function() {
+	drawLineArr=[];areArr=[];
+     map.plugin(["AMap.PolyEditor"],function(){
+        polylineEditor = new AMap.PolyEditor(map,alloverlaysList[k]); 
+        polylineEditor.open(); 
+    });                 
+	}, 2);
+		//完成编辑
+	contextMenu.addItem("完成编辑", function() {          
+	 polylineEditor.on('end',function(e){ 
+	 drawLineArr.push(e.target.getPath());
+	 areArr.push(e.target.getArea( ))
+	 var ID=e.target.getExtData()['ID']
+	 var subID='Subcatchment{0}'.Format({0:ID});
+	 		subArr[subID]['PathLngLat']=drawLineArr[0].join('|').replace(/,/g,"_");
+		subArr[subID]['subArea']=areArr[0]/10000;
+		subArr[subID]['subWidth']=Math.sqrt(10000*subArr[subID]['subArea']);
+		var sumLng = 0;
+		var sumLat=0;
+for (var j = 0; j < drawLineArr[0].length; j++) {
+		
+        sumLng+= drawLineArr[0][j].getLng();
+		sumLat+=drawLineArr[0][j].getLat();
+    };
+       var subX=(sumLng/drawLineArr[0].length*100)/100;
+	   var subY=(sumLat/drawLineArr[0].length*100)/100;
+		subArr[subID]['subX-coordinate']=subX;
+		subArr[subID]['subY-coordinate']=subY;
+	 })
+	 polylineEditor.close();
+	}, 3);
+	contextMenu.addItem("属性", function() { 
+	$('#SubModal').modal('show');
+	showSubModal(thisclick.getExtData());
+	// $('#subName').val(thisclick.getExtData()['ID']);
+	 
+	 
+
+	}, 4);
+	contextMenu.open(map, e.lnglat);
+    contextMenuPositon =  e.lnglat;
+	}
+	else{
+	
+	
+	var deleteID=thisclick.getExtData()['ID'];
+		var contextMenu = new AMap.ContextMenu();  //创建右键菜单
+    //清除覆盖物
+    contextMenu.addItem("清除标记", function() { 
+	if(thisclick.CLASS_NAME=='AMap.Polyline')
+	if(thisclick.getExtData()['Type']=='Pipe'){
+	 {delete pipeArr['Pipe{0}'.Format({0:deleteID})]
+	 }
+	 }
+	 if(thisclick.CLASS_NAME=='AMap.Marker')
+
+	 {
+		 if(thisclick.getExtData()['Type']=='node')
+		 {
+		 delete nodesArr['Node{0}'.Format({0:deleteID})]
+		 }
+		 if(thisclick.getExtData()['Type']=='outfall')
+		 {
+			delete nodesArr['Outfall{0}'.Format({0:deleteID})]
+
+		 }
+	 }
+     thisclick.setMap(null);
+    }, 0);
+    //右键清除所有标记
+    contextMenu.addItem("清除所有标记", function() {
+        map.clearMap();
+		subArr=[];
+		pipeArr=[];
+		nodesArr=[];
+		outfallArr=[];
+    }, 1);
+	contextMenu.addItem("属性", function() { 
+	if(alloverlaysList[k].CLASS_NAME=='AMap.Marker')
+	{if(thisclick.getExtData()['Type']=="outfall")
+	{
+		$('#outfallModal').modal('show');
+	// $('#outfallNames').val(thisclick.getExtData()['ID']);
+	showOutfallModal(thisclick.getExtData());
+	}
+	else{
+	$('#nodeModal').modal('show');
+	 //$('#nodeNames').val(thisclick.getExtData()['ID']);
+	 showNodeModal(thisclick.getExtData());
+	 }
+	 }
+	
+	 if(alloverlaysList[k].CLASS_NAME=='AMap.Polyline')
+	{
+
+	$('#pipeModal').modal('show');
+	 showLineModal(thisclick.getExtData());
+	 //$('#lineName').val(element['ID']);
+	 
+	 }
+
+	}, 3);
+	contextMenu.open(map, e.lnglat);
+    contextMenuPositon =  e.lnglat;
+	}
+	
+	});
+});
+ });
+ function setdefaults()
+ {
+defaults['defaultsubArea']=5;
+defaults['defaultsubWidth']=500;
+defaults['defaultsubSlope']=0.5;
+defaults['defaultsubImprev']=25;
+defaults['defaultsubzeroImprev']=25;
+defaults['defaultsubImprevN']=0.01;
+defaults['defaultsubPrevN']=0.1;
+defaults['defaultsubDstoreImprev']=0.05;
+defaults['defaultsubDstorePrev']=0.05;
+defaults['defaultnodeInvert']=0;
+defaults['defaultnodeMaxdepth']=0;
+defaults['defaultnodePonded']=0;
+defaults['defaultpipeLength']=400;
+defaults['defaultpipeShape']="CIRCULAR";
+defaults['defaultpipeRoughness']=0.01;
+defaults['defaultRoutingMethod']="动力波";
+defaults['defaultForceMainEq']="海曾·威廉";
+defaults['defaultInflitration']="HORTON";
+defaults['defaultMaxInfliRate']=3.0
+defaults['defaultMinInfliRate']=0.5
+defaults['defaultDecay']=4
+defaults['defaultDryingtime']=7
+defaults['defaultMaxVolume']=0
+defaults['defaultSuctionHead']=3.5
+defaults['defaultGreenConductivity']=0.5
+defaults['defaultInitialDeficit']=0.25
+defaults['defaultCurveNumber']=80
+defaults['defaultConductivity']=0.5
+defaults['defaultcurveDryingtime']=7
+ }
+ 
+ function updategroup()
+{
+
+if ($("#tagcheck").is(':checked') && $("#tagequal").val()!="") {
+
+
+if($("#objecttype").val()=="子汇水面积")
+{
+var x="";
+var object=$("#selections").val();
+switch (object)
+{
+case "标签":
+  x="subTag";
+  break;
+case "雨量计":
+  x="subRaingage";
+  break;
+case "面积":
+  x="subArea";
+  break;
+case "宽度":
+  x="subWidth";
+  break;
+case "坡度（%）":
+  x="subSlope";
+  break;
+case "不渗透性（%）":
+  x="subImprev";
+  break;
+case "不渗透性粗糙系数N值":
+  x="subImprevN";
+  break;
+  case "渗透性粗糙系数N值":
+  x="subPrevN";
+  break;
+case "不渗透性洼地蓄水":
+  x="subDstoreImprev";
+  break;
+case "渗透性洼地蓄水":
+  x="subDstorePrev";
+  break;
+case "无洼地蓄水不渗透性（%）":
+  x="subzeroImprev";
+  break;
+case "土地利用":
+  x="subLanduse";
+  break;
+case "边石长度":
+  x="subCurbLength";
+  break;
+case "积雪":
+  x="subSnow";
+  break;
+case "地下水":
+  x="subGroundwater";
+  break;
+}
+
+for (var s in subArr)
+{
+if(subArr[s]['subTag']==$("#tagequal").val())
+  {
+subArr[s][x]=$("#replace").val();
+  }
+ }
+}
+if($("#objecttype").val()=="下渗")
+{
+var x="";
+var object=$("#selections").val();
+if($("#defaultsubInflitration").val()=="HORTON")
+{
+switch (object)
+  {
+case "最大速率":
+  x="MaxInfliRate";
+  break;
+case "最小速率":
+  x="MinInfliRate";
+  break;
+case "衰减常数":
+  x="Decay";
+  break;
+case "干旱时间":
+  x="Dryingtime";
+  break;
+case "最大容积":
+  x="MaxVolume";
+  break;
+  }
+}
+if($("#defaultsubInflitration").val()=="GREEN-AMPT")
+{
+switch (object)
+  {
+case "吸入水头":
+  x="SuctionHead";
+  break;
+case "导水率":
+  x="GreenConductivity";
+  break;
+case "初始亏损":
+  x="InitialDeficit";
+  break;
+  }
+}
+if($("#defaultsubInflitration").val()=="Curve_Number")
+{
+switch (object)
+  {
+case "曲线率":
+  x="CurveNumber";
+  break;
+case "导水率":
+  x="Conductivity";
+  break;
+case "排干时间":
+  x="curveDryingtime";
+  break;
+  }
+}
+for (var s in subArr){
+if(subArr[s]['subTag']==$("#tagequal").val())
+{
+subArr[s][x]=$("#replace").val();
+}
+}
+}
+if($("#objecttype").val()=="节点")
+{
+var x="";
+var object=$("#selections").val();
+switch (object)
+{
+case "标签":
+  x="nodeTag";
+  break;
+case "内底标高":
+  x="nodeElevation";
+  break;
+case "最大深度":
+  x="nodeDepth";
+  break;
+case "初始深度":
+  x="nodeInitialDepth";
+  break;
+case "超载深度":
+  x="nodeSurcharge";
+  break;
+  case "积水面积":
+  x="nodePonded";
+  break;
+  }
+  for (var n in nodesArr){
+if(nodesArr[n]['nodeTag']==$("#tagequal").val())
+{
+nodesArr[s][x]=$("#replace").val();
+} 
+}
+}
+if($("#objecttype").val()=="蓄水设施")
+{
+
+}
+if($("#objecttype").val()=="管渠")
+{
+
+var x="";
+var object=$("#selections").val();
+switch (object)
+{
+case "标签":
+  x="pipeTag";
+  break;
+case "形状":
+  x="pipeShape";
+  break;
+case "最大深度":
+  x="pipeDepth";
+  break;
+case "长度":
+  x="pipeLength";
+  break;
+case "粗糙系数":
+  x="pipeRoughness";
+  break;
+case "进水偏移":
+  x="pipeInletOffset";
+  break;
+
+case "出水偏移":
+  x="pipeOutletOffset";
+  break;
+case "初始流量":
+  x="pipeInitialFlow";
+  break;
+case "最大流量":
+  x="pipeMaxFlow";
+  break;
+case "进口损失系数":
+  x="pipeEntryLoss";
+  break;
+case "出口损失系数":
+  x="pipeExitLoss";
+  break;
+case "平均损失系数":
+  x="pipeAvgLoss";
+  break;
+  }
+  for (var p in pipeArr){
+if(pipeArr[p]['pipeTag']==$("#tagequal").val())
+ {
+pipeArr[s][x]=$("#replace").val();
+ } 
+  }
+ }
+}
+else
+{
+if($("#objecttype").val()=="子汇水面积")
+{
+var x="";
+var object=$("#selections").val();
+switch (object)
+{
+case "标签":
+  x="subTag";
+  break;
+case "雨量计":
+  x="subRaingage";
+  break;
+case "面积":
+  x="subArea";
+  break;
+case "宽度":
+  x="subWidth";
+  break;
+case "坡度（%）":
+  x="subSlope";
+  break;
+case "不渗透性（%）":
+  x="subImprev";
+  break;
+case "不渗透性粗糙系数N值":
+  x="subImprevN";
+  break;
+  case "渗透性粗糙系数N值":
+  x="subPrevN";
+  break;
+case "不渗透性洼地蓄水":
+  x="subDstoreImprev";
+  break;
+case "渗透性洼地蓄水":
+  x="subDstorePrev";
+  break;
+case "无洼地蓄水不渗透性（%）":
+  x="subzeroImprev";
+  break;
+case "土地利用":
+  x="subLanduse";
+  break;
+case "边石长度":
+  x="subCurbLength";
+  break;
+case "积雪":
+  x="subSnow";
+  break;
+case "地下水":
+  x="subGroundwater";
+  break;
+}
+
+for (var s in subArr)
+ {
+if(subArr[s]['subTag']==$("#tagequal").val())
+  {
+  subArr[s][x]=$("#replace").val();
+  }
+ }
+}
+ if($("#objecttype").val()=="下渗")
+{
+var x="";
+var object=$("#selections").val();
+if($("#defaultsubInflitration").val()=="HORTON")
+{
+switch (object)
+  {
+case "最大速率":
+  x="MaxInfliRate";
+  break;
+case "最小速率":
+  x="MinInfliRate";
+  break;
+case "衰减常数":
+  x="Decay";
+  break;
+case "干旱时间":
+  x="Dryingtime";
+  break;
+case "最大容积":
+  x="MaxVolume";
+  break;
+  }
+}
+if($("#defaultsubInflitration").val()=="GREEN-AMPT")
+{
+switch (object)
+  {
+case "吸入水头":
+  x="SuctionHead";
+  break;
+case "导水率":
+  x="GreenConductivity";
+  break;
+case "初始亏损":
+  x="InitialDeficit";
+  break;
+  }
+}
+if($("#defaultsubInflitration").val()=="Curve_Number")
+{
+switch (object)
+  {
+case "曲线率":
+  x="CurveNumber";
+  break;
+case "导水率":
+  x="Conductivity";
+  break;
+case "排干时间":
+  x="curveDryingtime";
+  break;
+  }
+}
+for (var s in subArr){
+subArr[s][x]=$("#replace").val();
+}
+} 
+ if($("#objecttype").val()=="节点")
+{
+var x="";
+var object=$("#selections").val();
+switch (object)
+{
+case "标签":
+  x="nodeTag";
+  break;
+case "内底标高":
+  x="nodeElevation";
+  break;
+case "最大深度":
+  x="nodeDepth";
+  break;
+case "初始深度":
+  x="nodeInitialDepth";
+  break;
+case "超载深度":
+  x="nodeSurcharge";
+  break;
+  case "积水面积":
+  x="nodePonded";
+  break;
+  }
+  for (var n in nodesArr){
+nodesArr[s][x]=$("#replace").val(); 
+}
+}
+ if($("#objecttype").val()=="管渠")
+{
+
+var x="";
+var object=$("#selections").val();
+switch (object)
+{
+case "标签":
+  x="pipeTag";
+  break;
+case "形状":
+  x="pipeShape";
+  break;
+case "最大深度":
+  x="pipeDepth";
+  break;
+case "长度":
+  x="pipeLength";
+  break;
+case "粗糙系数":
+  x="pipeRoughness";
+  break;
+case "进水偏移":
+  x="pipeInletOffset";
+  break;
+
+case "出水偏移":
+  x="pipeOutletOffset";
+  break;
+case "初始流量":
+  x="pipeInitialFlow";
+  break;
+case "最大流量":
+  x="pipeMaxFlow";
+  break;
+case "进口损失系数":
+  x="pipeEntryLoss";
+  break;
+case "出口损失系数":
+  x="pipeExitLoss";
+  break;
+case "平均损失系数":
+  x="pipeAvgLoss";
+  break;
+  }
+  for (var p in pipeArr){
+pipeArr[s][x]=$("#replace").val();
+}
+}
+}
+}
+
+ 
+function updateHorton()
+{
+$('#defaultsubInflitration').val('HORTON');
+defaults['defaultMaxInfliRate']=$('#defaultMaxInfliRate').val()
+defaults['defaultMinInfliRate']=$('#defaultMinInfliRate').val()
+defaults['defaultDecay']=$('#defaultDecay').val()
+defaults['defaultDryingtime']=$('#defaultDryingtime').val()
+defaults['defaultMaxVolume']=$('#defaultMaxVolume').val()
+
+}
+function updateGreen()
+{
+$('#defaultsubInflitration').val('GREEN-AMPT');
+defaults['defaultSuctionHead']=$('#defaultSuctionHead').val()
+defaults['defaultGreenConductivity']=$('#defaultGreenConductivity').val()
+defaults['defaultInitialDeficit']=$('#defaultInitialDeficit').val()
+}
+function updateCurve()
+{
+$('#defaultsubInflitration').val('Curve_Number');
+defaults['defaultCurveNumber']=$('#defaultCurveNumber').val()
+defaults['defaultConductivity']=$('#defaultConductivity').val()
+defaults['defaultcurveDryingtime']=$('#defaultcurveDryingtime').val()
+}
+
+function updatesubHorton()
+{
+var subID='Subcatchment{0}'.Format({0:$('#subName').val()})
+subArr[subID]['MaxInfliRate']=$('#MaxInfliRate').val()
+subArr[subID]['MinInfliRate']=$('#MinInfliRate').val()
+subArr[subID]['Decay']=$('#Decay').val()
+subArr[subID]['Dryingtime']=$('#Dryingtime').val()
+subArr[subID]['MaxVolume']=$('#MaxVolume').val()
+
+}
+function updatesubGreen()
+{
+var subID='Subcatchment{0}'.Format({0:$('#subName').val()})
+
+subArr[subID]['SuctionHead']=$('#subSuctionHead').val()
+subArr[subID]['GreenConductivity']=$('#subGreenConductivity').val()
+subArr[subID]['InitialDeficit']=$('#subInitialDeficit').val()
+}
+function updatesubCurve()
+{
+var subID='Subcatchment{0}'.Format({0:$('#subName').val()})
+subArr[subID]['CurveNumber']=$('#subCurveNumber').val()
+subArr[subID]['Conductivity']=$('#subConductivity').val()
+subArr[subID]['curveDryingtime']=$('#subcurveDryingtime').val()
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function updatedefault()
+{
+
+defaults['defaultsubArea']=$('#defaultsubArea').val();
+defaults['defaultsubWidth']=$('#defaultsubWidth').val();
+defaults['defaultsubSlope']=$('#defaultsubSlope').val();
+defaults['defaultsubImprev']=$('#defaultsubImprev').val();
+defaults['defaultsubImprevN']=$('#defaultsubImprevN').val();
+defaults['defaultsubPrevN']=$('#defaultsubPrevN').val();
+defaults['defaultsubDstoreImprev']=$('#defaultsubDstoreImprev').val();
+defaults['defaultsubDstorePrev']=$('#defaultsubDstorePrev').val();
+defaults['defaultnodeInvert']=$('#defaultnodeInvert').val();
+defaults['defaultnodeMaxdepth']=$('#defaultnodeMaxdepth').val();
+defaults['defaultnodePonded']=$('#defaultnodePonded').val();
+defaults['defaultpipeLength']=$('#defaultpipeLength').val();
+defaults['defaultpipeShape']=$('#defaultpipeShape').val();
+defaults['defaultpipeRoughness']=$('#defaultpipeRoughness').val();
+defaults['defaultRoutingMethod']=$('#defaultRoutingMethod').val();
+defaults['defaultForceMainEq']=$('#defaultForceMainEq').val();
+
+defaults['defaultInflitration']=$('#defaultsubInflitration').val();
+defaults['defaultMaxInfliRate']=$('#defaultMaxInfliRate').val();
+defaults['defaultMinInfliRate']=$('#defaultMinInfliRate').val();
+defaults['defaultDecay']=$('#defaultDecay').val();
+defaults['defaultDryingtime']=$('#defaultDryingtime').val();
+defaults['defaultMaxVolume']=$('#defaultMaxVolume').val();
+defaults['defaultSuctionHead']=$('#defaultSuctionHead').val();
+defaults['defaultGreenConductivity']=$('#defaultGreenConductivity').val();
+defaults['defaultInitialDeficit']=$('#defaultInitialDeficit').val();
+defaults['defaultCurveNumber']=$('#defaultCurveNumber').val();
+defaults['defaultConductivity']=$('#defaultConductivity').val();
+defaults['defaultcurveDryingtime']=$('#defaultcurveDryingtime').val();
+}
+ //属性update
+function updateSub() {  
+
+var subID='Subcatchment{0}'.Format({0:$('#subName').val()})
+
+	subArr[subID]['subArea']=$('#subArea').val();
+
+	subArr[subID]['subDescription']=$('#subDescription').val();
+
+	subArr[subID]['subX-coordinate']=$('#subX-coordinate').val();
+
+	subArr[subID]['subY-coordinate']=$('#subY-coordinate').val();
+
+	subArr[subID]['subTag']=$('#subTag').val();
+
+	subArr[subID]['subRaingage']=$('#subRaingage').val();
+
+	subArr[subID]['subOutlet']=$('#subOutlet').val();
+    if($('#subOutlet').val()!='*')
+	{
+		if(nodesArr.hasOwnProperty('Node{0}'.Format({0:$('#subOutlet').val()})))
+		{
+		lnglatsub=new AMap.LngLat($('#subX-coordinate').val(),$('#subY-coordinate').val())
+		lnglatnode=new AMap.LngLat(nodesArr['Node{0}'.Format({0:$('#subOutlet').val()})]['nodeX-coordinate'],nodesArr['Node{0}'.Format({0:$('#subOutlet').val()})]['nodeY-coordinate']);
+		linknode([lnglatsub,lnglatnode]);
+      }
+	  else if(outfallArr.hasOwnProperty('Outfall{0}'.Format({0:$('#subOutlet').val()})))
+		{
+		lnglatsub=new AMap.LngLat($('#subX-coordinate').val(),$('#subY-coordinate').val())
+		lnglatnode=new AMap.LngLat(outfallArr['Outfall{0}'.Format({0:$('#subOutlet').val()})]['outfallX-coordinate'],outfallArr['Outfall{0}'.Format({0:$('#subOutlet').val()})]['outfallY-coordinate']);
+		linknode([lnglatsub,lnglatnode]);
+      }
+	  	  else if(subArr.hasOwnProperty('Subcatchment{0}'.Format({0:$('#subOutlet').val()})))
+		{
+		lnglatsub=new AMap.LngLat($('#subX-coordinate').val(),$('#subY-coordinate').val())
+		lnglatnode=new AMap.LngLat(subArr['Subcatchment{0}'.Format({0:$('#subOutlet').val()})]['subX-coordinate'],subArr['Subcatchment{0}'.Format({0:$('#subOutlet').val()})]['subY-coordinate']);
+		linknode([lnglatsub,lnglatnode]);
+      }
+	  
+	  else{
+		  alert('出口节点有误，无此对象');
+		  $('#subOutlet').val('*');
+	  }
+	}
+	subArr[subID]['subArea']=$('#subArea').val();
+ 
+	subArr[subID]['subWidth']=$('#subWidth').val();
+ 
+	subArr[subID]['subSlope']=$('#subSlope').val();
+
+	subArr[subID]['subImprev']=$('#subImprev').val();
+
+	subArr[subID]['subImprevN']=$('#subImprevN').val();
+ 
+	subArr[subID]['subPrevN']=$('#subPrevN').val();
+ 
+	subArr[subID]['subDstoreImprev']=$('#subDstoreImprev').val();
+
+	subArr[subID]['subDstorePrev']=$('#subDstorePrev').val();
+
+	subArr[subID]['subzeroImprev']=$('#subzeroImprev').val();
+
+	subArr[subID]['subRoute']=$('#subRoute').val();
+
+	subArr[subID]['subPercentRoute']=$('#subPercentRoute').val();
+
+	subArr[subID]['subInflitration']=$('#subInflitration').val();
+
+	subArr[subID]['subGroundwater']=$('#subGroundwater').val();
+
+	subArr[subID]['subSnow']=$('#subSnow').val();
+ 
+	subArr[subID]['subLID']=$('#subLID').val();
+ 
+	subArr[subID]['subLanduse']=$('#subLanduse').val();
+
+	subArr[subID]['subBuildup']=$('#subBuildup').val();
+ 
+	subArr[subID]['subCurbLength']=$('#subCurbLength').val();
+	
+	subArr[subID]['MaxInfliRate']=$('#subMaxInfliRate').val();
+	
+	subArr[subID]['MinInfliRate']=$('#subMinInfliRate').val();
+	
+	subArr[subID]['Decay']=$('#subDecay').val();
+	
+	subArr[subID]['Dryingtime']=$('#subDryingtime').val();
+	
+	subArr[subID]['MaxVolume']=$('#subMaxVolume').val();
+	
+	subArr[subID]['SuctionHead']=$('#subSuctionHead').val();
+	
+	subArr[subID]['GreenConductivity']=$('#subGreenConductivity').val();
+	
+	subArr[subID]['InitialDeficit']=$('#subInitialDeficit').val();
+	
+	subArr[subID]['CurveNumber']=$('#subCurveNumber').val();
+	
+	subArr[subID]['Conductivity']=$('#subConductivity').val();
+	
+	subArr[subID]['curveDryingtime']=$('#subcurveDryingtime').val();
+	
+}
+ function updatePipe() {
+	var pipeID='Pipe{0}'.Format({0:$('#pipeName').val()})
+
+	pipeArr[pipeID]['pipeInletNode']=$('#pipeInletNode').val();
+
+
+	pipeArr[pipeID]['pipeOutletNode']=$('#pipeOutletNode').val();
+ 
+
+	pipeArr[pipeID]['pipeDescription']=$('#pipeDescription').val();
+ 
+
+	pipeArr[pipeID]['pipeTag']=$('#pipeTag').val();
+ 
+
+	pipeArr[pipeID]['pipeShape']=$('#pipeShape').val();
+ 
+    pipeArr[pipeID]['pipeDepth']=$('#pipeDepth').val();
+	
+	pipeArr[pipeID]['pipeLength']=$('#pipeLength').val();
+ 
+
+	pipeArr[pipeID]['pipeRoughness']=$('#pipeRoughness').val();
+ 
+
+	pipeArr[pipeID]['pipeInletOffset']=$('#pipeInletOffset').val();
+ 
+
+	pipeArr[pipeID]['pipeOutletOffset']=$('#pipeOutletOffset').val();
+ 
+
+	pipeArr[pipeID]['pipeInitialFlow']=$('#pipeInitialFlow').val();
+ 
+
+	pipeArr[pipeID]['pipeMaxFlow']=$('#pipeMaxFlow').val();
+ 
+
+	pipeArr[pipeID]['pipeEntryLoss']=$('#pipeEntryLoss').val();
+ 
+
+	pipeArr[pipeID]['pipeExitLoss']=$('#pipeExitLoss').val();
+ 
+
+	pipeArr[pipeID]['pipeAvgLoss']=$('#pipeAvgLoss').val();
+ 
+
+	pipeArr[pipeID]['pipeFlapGate']=$('#pipeFlapGate').val();
+
+
+ }
+ 
+  function updateNode() {
+	var nodeID='Node{0}'.Format({0:$('#nodeNames').val()})
+
+nodesArr[nodeID]['nodeX-coordinate']=$('#nodeX-coordinate').val();
+
+nodesArr[nodeID]['nodeY-coordinate']=$('#nodeY-coordinate').val();
+
+nodesArr[nodeID]['nodeDescription']=$('#nodeDescription').val();
+
+
+nodesArr[nodeID]['nodeTag']=$('#nodeTag').val();
+
+
+nodesArr[nodeID]['nodeTreatment']=$('#nodeTreatment').val();
+
+
+nodesArr[nodeID]['nodeElevation']=$('#nodeElevation').val();
+
+
+nodesArr[nodeID]['nodeDepth']=$('#nodeDepth').val();
+
+
+nodesArr[nodeID]['nodeInitialDepth']=$('#nodeInitialDepth').val();
+
+
+nodesArr[nodeID]['nodeSurcharge']=$('#nodeSurcharge').val();
+
+
+nodesArr[nodeID]['nodePonded']=$('#nodePonded').val();
+
+
+ }
+   function updateOutfall() {
+	var outfallID='Outfall{0}'.Format({0:$('#outfallNames').val()});
+
+	outfallArr[outfallID]['outfallX-coordinate']=$('#outfallX-coordinate').val();
+
+ 
+   outfallArr[outfallID]['outfallY-coordinate']=$('#outfallY-coordinate').val();
+ 
+
+	outfallArr[outfallID]['outfallDescription']=$('#outfallDescription').val();
+ 
+
+	outfallArr[outfallID]['outfallTag']=$('#outfallTag').val();
+ 
+
+	outfallArr[outfallID]['outfallTreatment']=$('#outfallTreatment').val();
+ 
+
+	outfallArr[outfallID]['outfallElevation']=$('#outfallElevation').val();
+ 
+	outfallArr[outfallID]['outfallTideGate']=$('#outfallTideGate').val();
+ 
+
+	outfallArr[outfallID]['outfallType']=$('#outfallType').val();
+
+
+	outfallArr[outfallID]['outfallStage']=$('#outfallStage').val();
+ 
+
+	outfallArr[outfallID]['outfallCurve']=$('#outfallCurve').val();
+ 
+
+	outfallArr[outfallID]['outfallSeries']=$('#outfallSeries').val();
+ 
+
+ }
+  function updateNodeInflow() {
+	
+ }
+   function updateofInflows() {
+
+ }
+ 
+ function showHorton()
+ {var subID='Subcatchment{0}'.Format({0:$('#subName').val()})
+ if(subArr[subID].hasOwnProperty('MaxInfliRate'))
+{
+	$('#subMaxInfliRate').val(subArr[subID]['MaxInfliRate']);
+ }
+ else{
+	$('#subMaxInfliRate').val(defaults['defaultMaxInfliRate']);
+ }
+ 
+  if(subArr[subID].hasOwnProperty('MinInfliRate'))
+{
+	$('#subMinInfliRate').val(subArr[subID]['MinInfliRate']);
+ }
+ else{
+	$('#subMinInfliRate').val(defaults['defaultMinInfliRate']);
+ }
+ 
+  if(subArr[subID].hasOwnProperty('Decay'))
+{
+	$('#subDecay').val(subArr[subID]['Decay']);
+ }
+ else{
+	$('#subDecay').val(defaults['defaultDecay']);
+ }
+ 
+ 
+  if(subArr[subID].hasOwnProperty('Dryingtime'))
+{
+	$('#subDryingtime').val(subArr[subID]['Dryingtime']);
+ }
+ else{
+	$('#subDryingtime').val(defaults['defaultDryingtime']);
+ }
+ 
+ 
+  if(subArr[subID].hasOwnProperty('MaxVolume'))
+{
+	$('#subMaxVolume').val(subArr[subID]['MaxVolume']);
+ }
+ else{
+	$('#subMaxVolume').val(defaults['defaultMaxVolume']);
+ }
+ 
+ }
+ 
+ function showGreen()
+ {var subID='Subcatchment{0}'.Format({0:$('#subName').val()})
+ if(subArr[subID].hasOwnProperty('SuctionHead'))
+{
+	$('#subSuctionHead').val(subArr[subID]['SuctionHead']);
+ }
+ else{
+	$('#subSuctionHead').val(defaults['defaultSuctionHead']);
+
+ }
+ 
+  if(subArr[subID].hasOwnProperty('GreenConductivity'))
+{
+	$('#subGreenConductivity').val(subArr[subID]['GreenConductivity']);
+ }
+ else{
+	$('#subGreenConductivity').val(defaults['defaultGreenConductivity']);
+
+ }
+ 
+  if(subArr[subID].hasOwnProperty('InitialDeficit'))
+{
+	$('#subInitialDeficit').val(subArr[subID]['InitialDeficit']);
+ }
+ else{
+	$('#subInitialDeficit').val(defaults['defaultInitialDeficit']);
+
+ }
+ 
+ 
+ }
+ 
+ 
+function showCurve()
+ {var subID='Subcatchment{0}'.Format({0:$('#subName').val()})
+ if(subArr[subID].hasOwnProperty('CurveNumber'))
+{
+	$('#subCurveNumber').val(subArr[subID]['CurveNumber']);
+ }
+ else{
+	$('#subCurveNumber').val(defaults['defaultCurveNumber']);
+
+ }
+  if(subArr[subID].hasOwnProperty('Conductivity'))
+{
+	$('#subConductivity').val(subArr[subID]['Conductivity']);
+ }
+ else{
+	$('#subConductivity').val(defaults['defaultConductivity']);
+
+ }
+  if(subArr[subID].hasOwnProperty('curveDryingtime'))
+{
+	$('#subcurveDryingtime').val(subArr[subID]['curveDryingtime']);
+ }
+ else{
+	$('#subcurveDryingtime').val(defaults['defaultcurveDryingtime']);
+
+ }
+ 
+ } 
+ 
+
+ 
+ function showDefaults()
+ {
+
+if(defaults.hasOwnProperty('defaultsubArea'))
+{
+	$('#defaultsubArea').val(defaults['defaultsubArea']);
+}
+
+if(defaults.hasOwnProperty('defaultsubWidth'))
+{
+	$('#defaultsubWidth').val(defaults['defaultsubWidth']);
+}
+if(defaults.hasOwnProperty('defaultsubSlope'))
+{
+	$('#defaultsubSlope').val(defaults['defaultsubSlope']);
+}
+if(defaults.hasOwnProperty('defaultsubImprev'))
+{
+	$('#defaultsubImprev').val(defaults['defaultsubImprev']);
+}
+if(defaults.hasOwnProperty('defaultsubImprevN'))
+{
+	$('#defaultsubImprevN').val(defaults['defaultsubImprevN']);
+}
+if(defaults.hasOwnProperty('defaultsubPrevN'))
+{
+	$('#defaultsubPrevN').val(defaults['defaultsubPrevN']);
+}
+if(defaults.hasOwnProperty('defaultsubDstoreImprev'))
+{
+	$('#defaultsubDstoreImprev').val(defaults['defaultsubDstoreImprev']);
+}
+if(defaults.hasOwnProperty('defaultsubDstorePrev'))
+{
+	$('#defaultsubDstorePrev').val(defaults['defaultsubDstorePrev']);
+}
+if(defaults.hasOwnProperty('defaultnodeInvert'))
+{
+	$('#defaultnodeInvert').val(defaults['defaultnodeInvert']);
+}
+if(defaults.hasOwnProperty('defaultnodeMaxdepth'))
+{
+	$('#defaultnodeMaxdepth').val(defaults['defaultnodeMaxdepth']);
+}
+if(defaults.hasOwnProperty('defaultnodePonded'))
+{
+	$('#defaultnodePonded').val(defaults['defaultnodePonded']);
+}
+if(defaults.hasOwnProperty('defaultpipeLength'))
+{
+	$('#defaultpipeLength').val(defaults['defaultpipeLength']);
+}
+if(defaults.hasOwnProperty('defaultpipeShape'))
+{
+	$('#defaultpipeShape').val(defaults['defaultpipeShape']);
+}
+if(defaults.hasOwnProperty('defaultpipeRoughness'))
+{
+	$('#defaultpipeRoughness').val(defaults['defaultpipeRoughness']);
+}
+if(defaults.hasOwnProperty('defaultsubDstoreImprev'))
+{
+	$('#defaultsubDstoreImprev').val(defaults['defaultsubDstoreImprev']);
+}
+if(defaults.hasOwnProperty('defaultRoutingMethod'))
+{
+	$('#defaultRoutingMethod').val(defaults['defaultRoutingMethod']);
+}
+if(defaults.hasOwnProperty('defaultForceMainEq'))
+{
+	$('#defaultForceMainEq').val(defaults['defaultForceMainEq']);
+}
+
+if(defaults.hasOwnProperty('defaultInflitration'))
+{
+	$('#defaultInflitration').val(defaults['defaultInflitration']);
+}
+if(defaults.hasOwnProperty('defaultMaxInfliRate'))
+{
+	$('#defaultMaxInfliRate').val(defaults['defaultMaxInfliRate']);
+}
+if(defaults.hasOwnProperty('defaultMinInfliRate'))
+{
+	$('#defaultMinInfliRate').val(defaults['defaultMinInfliRate']);
+}
+if(defaults.hasOwnProperty('defaultDecay'))
+{
+	$('#defaultDecay').val(defaults['defaultDecay']);
+}
+
+if(defaults.hasOwnProperty('defaultDryingtime'))
+{
+	$('#defaultDryingtime').val(defaults['defaultDryingtime']);
+}
+if(defaults.hasOwnProperty('defaultMaxVolume'))
+{
+	$('#defaultMaxVolume').val(defaults['defaultMaxVolume']);
+}
+if(defaults.hasOwnProperty('defaultSuctionHead'))
+{
+	$('#defaultSuctionHead').val(defaults['defaultSuctionHead']);
+}
+if(defaults.hasOwnProperty('defaultGreenConductivity'))
+{
+	$('#defaultGreenConductivity').val(defaults['defaultGreenConductivity']);
+}
+
+if(defaults.hasOwnProperty('defaultInitialDeficit'))
+{
+	$('#defaultInitialDeficit').val(defaults['defaultInitialDeficit']);
+}
+if(defaults.hasOwnProperty('defaultCurveNumber'))
+{
+	$('#defaultCurveNumber').val(defaults['defaultCurveNumber']);
+}
+if(defaults.hasOwnProperty('defaultConductivity'))
+{
+	$('#defaultConductivity').val(defaults['defaultConductivity']);
+}
+if(defaults.hasOwnProperty('defaultcurveDryingtime'))
+{
+	$('#defaultcurveDryingtime').val(defaults['defaultcurveDryingtime']);
+}
+
+
+
+
+
+ }
+   function showNodeModal(element) {
+	updatedefault();
+	   if(nodesArr.hasOwnProperty('Node{0}'.Format({0:element['ID']})))
+{
+	$('#nodeNames').val(element['ID']);
+	var nodeID='Node{0}'.Format({0:element['ID']})
+ if(nodesArr[nodeID].hasOwnProperty('nodeX-coordinate'))
+{
+	$('#nodeX-coordinate').val(nodesArr[nodeID]['nodeX-coordinate']);
+}
+else{
+	$('#nodeX-coordinate').val('');
+
+}
+ if(nodesArr[nodeID].hasOwnProperty('nodeY-coordinate'))
+{
+	$('#nodeY-coordinate').val(nodesArr[nodeID]['nodeY-coordinate']);
+ }
+ else{
+
+$('#nodeY-coordinate').val('');
+
+ }
+ if(nodesArr[nodeID].hasOwnProperty('nodeDescription'))
+{
+	$('#nodeDescription').val(nodesArr[nodeID]['nodeDescription']);
+ }
+ else{
+	$('#nodeDescription').val('')
+ }
+ if(nodesArr[nodeID].hasOwnProperty('nodeTag'))
+{
+	$('#nodeTag').val(nodesArr[nodeID]['nodeTag']);
+ }
+ else{
+	$('#nodeTag').val('');
+
+ }
+ if(nodesArr[nodeID].hasOwnProperty('nodeTreatment'))
+{
+	$('#nodeTreatment').val(nodesArr[nodeID]['nodeTreatment']);
+ }
+ else{
+	$('#nodeTreatment').val('');
+
+
+ }
+ if(nodesArr[nodeID].hasOwnProperty('nodeElevation'))
+{
+	$('#nodeElevation').val(nodesArr[nodeID]['nodeElevation']);
+ }
+else{
+	$('#nodeElevation').val(defaults['defaultnodeInvert']);
+}
+
+
+ if(nodesArr[nodeID].hasOwnProperty('nodeDepth'))
+{
+	$('#nodeDepth').val(nodesArr[nodeID]['nodeDepth']);
+ }
+ else{
+	$('#nodeDepth').val(defaults['defaultnodeMaxdepth']);
+
+ }
+ if(nodesArr[nodeID].hasOwnProperty('nodeInitialDepth'))
+{
+	$('#nodeInitialDepth').val(nodesArr[nodeID]['nodeInitialDepth']);
+ }
+ else{
+	$('#nodeInitialDepth').val('');
+
+ }
+ if(nodesArr[nodeID].hasOwnProperty('nodeSurcharge'))
+{
+	$('#nodeSurcharge').val(nodesArr[nodeID]['nodeSurcharge']);
+ }
+ else{
+	$('#nodeSurcharge').val('');
+ }
+ if(nodesArr[nodeID].hasOwnProperty('nodePonded'))
+{
+	$('#nodePonded').val(nodesArr[nodeID]['nodePonded']);
+ }
+else{
+	$('#nodePonded').val(defaults['defaultnodePonded']);
+
+}
+ }
+
+ }
+
+
+function showOutfallModal(element) {
+	updatedefault();
+	if(outfallArr.hasOwnProperty('Outfall{0}'.Format({0:element['ID']})))
+{
+	$('#outfallNames').val(element['ID']);
+	var outfallID='Outfall{0}'.Format({0:element['ID']})
+ if(outfallArr[outfallID].hasOwnProperty('outfallX-coordinate'))
+{
+	$('#outfallX-coordinate').val(outfallArr[outfallID]['outfallX-coordinate']);
+}
+else{
+	$('#outfallX-coordinate').val('');
+
+}
+ if(outfallArr[outfallID].hasOwnProperty('outfallY-coordinate'))
+{
+	$('#outfallY-coordinate').val(outfallArr[outfallID]['outfallY-coordinate']);
+ }
+ else{
+	$('#outfallY-coordinate').val('');
+
+ }
+ if(outfallArr[outfallID].hasOwnProperty('outfallDescription'))
+{
+	$('#outfallDescription').val(outfallArr[outfallID]['outfallDescription']);
+ }
+ else{
+	$('#outfallDescription').val('');
+
+ }
+ if(outfallArr[outfallID].hasOwnProperty('outfallTag'))
+{
+	$('#outfallTag').val(outfallArr[outfallID]['outfallTag']);
+ }
+ else{
+	$('#outfallTag').val('');
+
+
+ }
+ if(outfallArr[outfallID].hasOwnProperty('outfallTreatment'))
+{
+	$('#outfallTreatment').val(outfallArr[outfallID]['outfallTreatment']);
+ }
+ else{
+	$('#outfallTreatment').val('');
+
+ }
+ if(outfallArr[outfallID].hasOwnProperty('outfallElevation'))
+{
+	$('#outfallElevation').val(outfallArr[outfallID]['outfallElevation']);
+ }
+ else{
+	$('#outfallElevation').val('');
+
+
+ }
+ 
+  if(outfallArr[outfallID].hasOwnProperty('outfallStage'))
+{
+	$('#outfallStage').val(outfallArr[outfallID]['outfallStage']);
+ }
+ else{
+	$('#outfallStage').val('');
+
+ }
+ if(outfallArr[outfallID].hasOwnProperty('outfallTideGate'))
+{
+	$('#outfallTideGate').val(outfallArr[outfallID]['outfallTideGate']);
+ }
+ else{
+	$('#outfallTideGate').val('');
+
+ }
+ 
+ if(outfallArr[outfallID].hasOwnProperty('outfallType'))
+{
+	$('#outfallType').val(outfallArr[outfallID]['outfallType']);
+ }
+ else{
+	$('#outfallType').val('');
+
+ }
+ if(outfallArr[outfallID].hasOwnProperty('outfallCurve'))
+{
+	$('#outfallCurve').val(outfallArr[outfallID]['outfallCurve']);
+ }
+ else{
+	$('#outfallCurve').val('');
+
+ }
+ if(outfallArr[outfallID].hasOwnProperty('outfallSeries'))
+{
+	$('#outfallSeries').val(outfallArr[outfallID]['outfallSeries']);
+ }
+ else{
+	$('#outfallSeries').val('');
+
+ }
+ }
+}
+function showSubModal(element) {
+	updatedefault();
+if(subArr.hasOwnProperty('Subcatchment{0}'.Format({0:element['ID']})))
+{
+	$('#subName').val(element['ID']);
+	var subID='Subcatchment{0}'.Format({0:element['ID']})
+ if(subArr[subID].hasOwnProperty('subX-coordinate'))
+{
+	$('#subX-coordinate').val(subArr[subID]['subX-coordinate']);
+}
+else{
+
+	$('#subX-coordinate').val('');
+}
+ if(subArr[subID].hasOwnProperty('subY-coordinate'))
+{
+	$('#subY-coordinate').val(subArr[subID]['subY-coordinate']);
+ }
+ else{
+	$('#subY-coordinate').val('');
+ }
+ if(subArr[subID].hasOwnProperty('subDescription'))
+{
+	$('#subDescription').val(subArr[subID]['subDescription']);
+ }
+ else{
+	$('#subDescription').val('');
+
+ }
+ if(subArr[subID].hasOwnProperty('subTag'))
+{
+	$('#subTag').val(subArr[subID]['subTag']);
+ }
+ else{
+	$('#subTag').val('');
+
+ }
+ if(subArr[subID].hasOwnProperty('subRaingage'))
+{
+	$('#subRaingage').val(subArr[subID]['subRaingage']);
+ }
+ else{
+	$('#subRaingage').val('');
+
+ }
+ if(subArr[subID].hasOwnProperty('subOutlet'))
+{
+	$('#subOutlet').val(subArr[subID]['subOutlet']);
+ }
+ else{
+	$('#subOutlet').val('');
+
+ }
+ if(subArr[subID].hasOwnProperty('subArea'))
+{
+	$('#subArea').val(subArr[subID]['subArea']);
+ }
+ else{
+	$('#subArea').val(defaults['defaultsubArea']);
+
+ }
+ if(subArr[subID].hasOwnProperty('subWidth'))
+{
+	$('#subWidth').val(subArr[subID]['subWidth']);
+ }
+ else{
+	$('#subWidth').val(defaults['defaultsubWidth']);
+
+ }
+ if(subArr[subID].hasOwnProperty('subSlope'))
+{
+	$('#subSlope').val(subArr[subID]['subSlope']);
+ }
+ else
+ {
+	$('#subSlope').val(defaults['defaultsubSlope']);
+
+ }
+ if(subArr[subID].hasOwnProperty('subImprev'))
+{
+	$('#subImprev').val(subArr[subID]['subImprev']);
+ }
+ else{
+	$('#subImprev').val(defaults['defaultsubImprev']);
+
+ }
+ if(subArr[subID].hasOwnProperty('subzeroImprev'))
+{
+	$('#subzeroImprev').val(subArr[subID]['subzeroImprev']);
+ }
+ else{
+	$('#subzeroImprev').val(defaults['defaultsubzeroImprev']);
+
+ }
+ if(subArr[subID].hasOwnProperty('subImprevN'))
+{
+	$('#subImprevN').val(subArr[subID]['subImprevN']);
+ }
+ else{
+	$('#subImprevN').val(defaults['defaultsubImprevN']);
+
+ }
+ if(subArr[subID].hasOwnProperty('subPrevN'))
+{
+	$('#subPrevN').val(subArr[subID]['subPrevN']);
+ }
+ else
+ {
+	$('#subPrevN').val(defaults['defaultsubPrevN']);
+
+ }
+ if(subArr[subID].hasOwnProperty('subDstoreImprev'))
+{
+	$('#subDstoreImprev').val(subArr[subID]['subDstoreImprev']);
+ }
+ else{
+	$('#subDstoreImprev').val(defaults['defaultsubDstoreImprev']);
+
+ }
+ if(subArr[subID].hasOwnProperty('subDstorePrev'))
+{
+	$('#subDstorePrev').val(subArr[subID]['subDstorePrev']);
+ }
+ else{
+	$('#subDstorePrev').val(defaults['defaultsubDstorePrev']);
+
+ }
+ 
+  if(subArr[subID].hasOwnProperty('subRoute'))
+{
+	$('#subRoute').val(subArr[subID]['subRoute']);
+ }
+ else
+ {
+	$('#subRoute').val('');
+
+ }
+ 
+ if(subArr[subID].hasOwnProperty('subPercentRoute'))
+{
+	$('#subPercentRoute').val(subArr[subID]['subPercentRoute']);
+ }
+ else
+ {
+	$('#subPercentRoute').val('');
+
+ }
+
+
+  if(subArr[subID].hasOwnProperty('subGroundwater'))
+{
+	$('#subGroundwater').val(subArr[subID]['subGroundwater']);
+ }
+ else
+ {
+	$('#subGroundwater').val('');
+
+ }
+ if(subArr[subID].hasOwnProperty('subSnow'))
+{
+	$('#subSnow').val(subArr[subID]['subSnow']);
+ }
+ else
+ {
+	$('#subSnow').val('');
+
+ }
+ if(subArr[subID].hasOwnProperty('subLID'))
+{
+	$('#subLID').val(subArr[subID]['subLID']);
+ }
+ else
+{
+	$('#subLID').val('');
+}
+ if(subArr[subID].hasOwnProperty('subLanduse'))
+{
+	$('#subLanduse').val(subArr[subID]['subLanduse']);
+ }
+ else
+ {
+	$('#subLanduse').val(''); 
+ }
+ if(subArr[subID].hasOwnProperty('subBuildup'))
+{
+	$('#subBuildup').val(subArr[subID]['subBuildup']);
+ }
+ else
+ {
+	$('#subBuildup').val(''); 
+ }
+ if(subArr[subID].hasOwnProperty('subCurbLength'))
+{
+	$('#subCurbLength').val(subArr[subID]['subCurbLength']);
+ }
+ else
+ {
+	$('#subCurbLength').val('');
+ }
+ 
+ 
+   if(subArr[subID].hasOwnProperty('subInflitration'))
+{
+	$('#subInflitration').val(subArr[subID]['subInflitration']);
+ }
+ else
+ {
+	$('#subInflitration').val(defaults['defaultInflitration']);
+
+ }
+ if(subArr[subID].hasOwnProperty('subMaxInfliRate'))
+{
+	$('#subMaxInfliRate').val(subArr[subID]['MaxInfliRate']);
+ }
+ else
+ {
+	$('#subMaxInfliRate').val(defaults['defaultMaxInfliRate']);
+ }
+ 
+   if(subArr[subID].hasOwnProperty('subMinInfliRate'))
+{
+	$('#subMinInfliRate').val(subArr[subID]['subMinInfliRate']);
+ }
+ else
+ {
+	$('#subMinInfliRate').val(defaults['defaultMinInfliRate']); 
+ }
+ if(subArr[subID].hasOwnProperty('subDecay'))
+{
+	$('#subDecay').val(subArr[subID]['subDecay']);
+ }
+ else
+ {
+	$('#subDecay').val(defaults['defaultDecay']);
+ }
+ 
+    if(subArr[subID].hasOwnProperty('subDryingtime'))
+{
+	$('#subDryingtime').val(subArr[subID]['subDryingtime']);
+ }
+ else
+ {
+	$('#subDryingtime').val(defaults['defaultDryingtime']); 
+ }
+ if(subArr[subID].hasOwnProperty('subMaxVolume'))
+{
+	$('#subMaxVolume').val(subArr[subID]['subMaxVolume']);
+ }
+ else
+ {
+	$('#subMaxVolume').val(defaults['defaultMaxVolume']);
+ }
+ 
+     if(subArr[subID].hasOwnProperty('subSuctionHead'))
+{
+	$('#subSuctionHead').val(subArr[subID]['subSuctionHead']);
+ }
+ else
+ {
+	$('#subSuctionHead').val(defaults['defaultSuctionHead']); 
+ }
+ if(subArr[subID].hasOwnProperty('subGreenConductivity'))
+{
+	$('#subGreenConductivity').val(subArr[subID]['subGreenConductivity']);
+ }
+ else
+ {
+	$('#subGreenConductivity').val(defaults['defaultGreenConductivity']);
+ }
+ 
+      if(subArr[subID].hasOwnProperty('subInitialDeficit'))
+{
+	$('#subInitialDeficit').val(subArr[subID]['subInitialDeficit']);
+ }
+ else
+ {
+	$('#subInitialDeficit').val(defaults['defaultInitialDeficit']); 
+ }
+ if(subArr[subID].hasOwnProperty('subCurveNumber'))
+{
+	$('#subCurveNumber').val(subArr[subID]['subCurveNumber']);
+ }
+ else
+ {
+	$('#subCurveNumber').val(defaults['defaultInitialDeficit']);
+ }
+ 
+       if(subArr[subID].hasOwnProperty('subConductivity'))
+{
+	$('#subConductivity').val(subArr[subID]['subConductivity']);
+ }
+ else
+ {
+	$('#subConductivity').val(defaults['defaultConductivity']); 
+ }
+ if(subArr[subID].hasOwnProperty('subcurveDryingtime'))
+{
+	$('#subcurveDryingtime').val(subArr[subID]['subcurveDryingtime']);
+ }
+ else
+ {
+	$('#subcurveDryingtime').val(defaults['defaultcurveDryingtime']);
+ }
+ 
+ 
+}
+}
+
+
+   function showLineModal(element) {
+	updatedefault();
+
+if(pipeArr.hasOwnProperty('Pipe{0}'.Format({0:element['ID']})))
+{
+	$('#pipeName').val(element['ID']);
+	var pipeID='Pipe{0}'.Format({0:element['ID']})
+ if(pipeArr[pipeID].hasOwnProperty('pipeInletNode'))
+{
+	$('#pipeInletNode').val(pipeArr[pipeID]['pipeInletNode']);
+}
+else
+{
+	$('#pipeInletNode').val('');	
+}
+ if(pipeArr[pipeID].hasOwnProperty('pipeOutletNode'))
+{
+	$('#pipeOutletNode').val(pipeArr[pipeID]['pipeOutletNode']);
+ }
+ else
+ {
+	$('#pipeOutletNode').val('');	 
+ }
+ if(pipeArr[pipeID].hasOwnProperty('pipeDescription'))
+{
+	$('#pipeDescription').val(pipeArr[pipeID]['pipeDescription']);
+ }
+ else
+ {
+	$('#pipeDescription').val('');
+
+ }
+ if(pipeArr[pipeID].hasOwnProperty('pipeTag'))
+{
+	$('#pipeTag').val(pipeArr[pipeID]['pipeTag']);
+ }
+ else
+ {
+	$('#pipeTag').val('');
+
+ }
+ if(pipeArr[pipeID].hasOwnProperty('pipeShape'))
+{
+	$('#pipeShape').val(pipeArr[pipeID]['pipeShape']);
+ }
+ else
+ {
+	$('#pipeShape').val('');
+ }
+  if(pipeArr[pipeID].hasOwnProperty('pipeDepth'))
+{
+	$('#pipeDepth').val(pipeArr[pipeID]['pipeDepth']);
+ }
+ else
+ {
+	$('#pipeDepth').val('');
+ }
+ if(pipeArr[pipeID].hasOwnProperty('pipeLength'))
+{
+	$('#pipeLength').val(pipeArr[pipeID]['pipeLength']);
+ }
+ else
+ {
+	$('#pipeLength').val(['defaultpipeLength']);
+ }
+ if(pipeArr[pipeID].hasOwnProperty('pipeRoughness'))
+{
+	$('#pipeRoughness').val(pipeArr[pipeID]['pipeRoughness']);
+ }
+ else
+ {
+	$('#pipeRoughness').val(defaults['defaultpipeRoughness']);
+ }
+ if(pipeArr[pipeID].hasOwnProperty('pipeInletOffset'))
+{
+	$('#pipeInletOffset').val(pipeArr[pipeID]['pipeInletOffset']);
+ }
+ else
+ {
+	$('#pipeInletOffset').val('');
+ }
+ if(pipeArr[pipeID].hasOwnProperty('pipeOutletOffset'))
+{
+	$('#pipeOutletOffset').val(pipeArr[pipeID]['pipeOutletOffset']);
+ }
+ else
+ {
+	$('#pipeOutletOffset').val('');
+ }
+ if(pipeArr[pipeID].hasOwnProperty('pipeInitialFlow'))
+{
+	$('#pipeInitialFlow').val(pipeArr[pipeID]['pipeInitialFlow']);
+ }
+ else{
+	$('#pipeInitialFlow').val('');
+ }
+ if(pipeArr[pipeID].hasOwnProperty('pipeMaxFlow'))
+{
+	$('#pipeMaxFlow').val(pipeArr[pipeID]['pipeMaxFlow']);
+ }
+ else{
+	$('#pipeMaxFlow').val('');
+ }
+ if(pipeArr[pipeID].hasOwnProperty('pipeEntryLoss'))
+{
+	$('#pipeEntryLoss').val(pipeArr[pipeID]['pipeEntryLoss']);
+ }
+ else
+ {$('#pipeEntryLoss').val('');
+ 
+ }
+ if(pipeArr[pipeID].hasOwnProperty('pipeExitLoss'))
+{
+	$('#pipeExitLoss').val(pipeArr[pipeID]['pipeExitLoss']);
+ }
+ else{
+	$('#pipeExitLoss').val('');
+ }
+ if(pipeArr[pipeID].hasOwnProperty('pipeAvgLoss'))
+{
+	$('#pipeAvgLoss').val(pipeArr[pipeID]['pipeAvgLoss']);
+ }
+ else{
+	$('#pipeAvgLoss').val('');
+ }
+ if(pipeArr[pipeID].hasOwnProperty('pipeFlapGate'))
+{
+	$('#pipeFlapGate').val(pipeArr[pipeID]['pipeFlapGate']);
+ }
+else{
+	$('#pipeFlapGate').val('');
+}
+}
+
+ }
+ 
+    $("#tools").append("<input type='button' class='button' value='测距离' id='measureDistance'/>");
+    AMap.event.addDomListener($('#measureDistance').get(0), 'click', function() {  map.setDefaultCursor("crosshair");
+       mouseTool.rule({strokeWeight:4});
+	     
+	   
+    }, false);
+
+    $("#tools").append("<input type='button' class='button' value='测面积' id='measureArea'/>");
+    AMap.event.addDomListener($('#measureArea').get(0), 'click', function() {  map.setDefaultCursor("crosshair");
+       mouseTool.polygon({fillColor:'#8000000F',fillOpacity:0,bubble:true});
+	   mouseTool.measureArea({fillColor:'#8000000F',fillOpacity:0,strokeWeight:4,bubble:true}); 
+    }, false);
+
+	$("#tools").append("<input type='button' class='button' value='显示ID' id='showID'/>");
+    AMap.event.addDomListener($('#showID').get(0), 'click', function() {
+     if($("#showID").val() == "显示ID"){
+	    IDlabel=[];
+	       $("#showID").val("关闭ID"); 
+        var alloverlays=map.getAllOverlays();
+		for(var i=0;i<alloverlays.length;i++){
+		var p=null;var t=null;
+		if(alloverlays[i].CLASS_NAME=="AMap.Marker")
+        {
+		if(alloverlays[i].getExtData()['Type']=='outfall')
+		{p=alloverlays[i].getPosition();
+		t='O';}
+		if(alloverlays[i].getExtData()['Type']=='node'){
+		p=alloverlays[i].getPosition();
+		t=' N';
+		}
+		}
+		if(alloverlays[i].CLASS_NAME=='AMap.Polyline')
+        {if(alloverlays[i].getExtData()['Type']=='pipe'){
+		p=[((alloverlays[i].getPath()[0]).getLng()+(alloverlays[i].getPath()[1]).getLng())/2,((alloverlays[i].getPath()[0]).getLat()+(alloverlays[i].getPath()[1]).getLat())/2];
+		t=' L';}
+		}
+		if(alloverlays[i].CLASS_NAME=='AMap.Polygon')
+        {
+		var sumLng = 0;
+		var sumLat=0;
+    for (var j = 0; j < alloverlays[i].getPath().length; j++) {
+		
+        sumLng+= alloverlays[i].getPath()[j].getLng();
+		sumLat+=alloverlays[i].getPath()[j].getLat();
+    };
+        p=[(sumLng/alloverlays[i].getPath().length*100)/100,(sumLat/alloverlays[i].getPath().length*100)/100];
+		t='S';
+		}
+	if((alloverlays[i].getExtData()['ID'])<10)
+	{
+	var text = new AMap.Text({
+        text:t+(alloverlays[i].getExtData()['ID']),
+        textAlign:'center', // 'left' 'right', 'center',
+        verticalAlign:'middle', //middle 、bottom
+        draggable:true,
+        cursor:'pointer',
+        angle:0,
+
+        style:{
+            'background-color':'white',
+            'border':'solid 1px #E6E6E6',
+            //'padding':'2px',
+			'font-size':'1px',
+			'height':'20px',
+			'width':'30px'
+        },
+		offset: new AMap.Pixel(0, 15),
+		position:p
+
+    });text.setMap(map);
+	}
+		else if((alloverlays[i].getExtData()['ID'])<100)
+	{var text = new AMap.Text({
+        text:t+alloverlays[i].getExtData()['ID'],
+        textAlign:'center', // 'left' 'right', 'center',
+        verticalAlign:'middle', //middle 、bottom
+        draggable:true,
+        cursor:'pointer',
+        angle:0,
+
+        style:{
+            'background-color':'white',
+            'border':'solid 1px #E6E6E6',
+            //'padding':'2px',
+			'font-size':'1px',
+			'height':'20px',
+			'width':'35px'
+        },
+		offset: new AMap.Pixel(0, 15),
+		position:p
+
+    });text.setMap(map);
+	}
+		else if((alloverlays[i].getExtData()['ID'])<1000)
+	{var text = new AMap.Text({
+        text:t+alloverlays[i].getExtData()['ID'],
+        textAlign:'center', // 'left' 'right', 'center',
+        verticalAlign:'middle', //middle 、bottom
+        draggable:true,
+        cursor:'pointer',
+        angle:0,
+
+        style:{
+            'background-color':'white',
+            'border':'solid 1px #E6E6E6',
+            //'padding':'2px',
+			'font-size':'1px',
+			'height':'20px',
+			'width':'40px'
+        },
+		offset: new AMap.Pixel(0, 15),
+		position:p
+
+    });text.setMap(map);
+	}
+		else if((alloverlays[i].getExtData()['ID'])<10000)
+	{var text = new AMap.Text({
+        text:t+alloverlays[i].getExtData()['ID'],
+        textAlign:'center', // 'left' 'right', 'center',
+        verticalAlign:'middle', //middle 、bottom
+        draggable:true,
+        cursor:'pointer',
+        angle:0,
+
+        style:{
+            'background-color':'white',
+            'border':'solid 1px #E6E6E6',
+            //'padding':'2px',
+			'font-size':'1px',
+			'height':'20px',
+			'width':'45px'
+        },
+		offset: new AMap.Pixel(0,15),
+		position:p
+
+    });text.setMap(map);
+	}
+    
+	IDlabel.push(text);
+		}   
+	   }
+	   
+	   else{
+	   $("#showID").val("显示ID"); 
+	   for (var i=0;i<IDlabel.length;i++)
+	   {
+	   IDlabel[i].setMap(null);
+	   }
+
+	   }
+    }, false);
+
+//截图功能
+/*
+<!-- $("#tools").append("<input type='button' class='rightbutton' value='地图下载' id='captureMap'/>"); -->
+ <!-- AMap.event.addDomListener($('#captureMap').get(0), 'click', function() {  map.setDefaultCursor("crosshair"); -->
+ <!-- mouseTool.rectangle({fillColor:'#8000000F',fillOpacity:0,bubble:true,strokeColor:'#1E90FF'}) -->
+
+ <!-- }, false); -->*/
+/*	
+var startpoint=[];
+var endpoint=[];
+var rectangle=[];
+var countH=0;
+var countW=0;
+var startpointPixel=[];
+var endpointPixel=[];
+$("#tools").append("<input type='button' class='rightbutton' value='选取范围' id='captureMap'/>");
+    AMap.event.addDomListener($('#captureMap').get(0), 'click', function() { 
+	
+	if($("#captureMap").val() == "选取范围")
+	{	map.setDefaultCursor("crosshair");
+		$("#captureMap").val("确定下载");
+       mouseTool.polygon({fillColor:'#8000000F',fillOpacity:0,bubble:true,strokeColor:'#00FFFF'})
+    }
+
+	else
+	{
+	  $("#captureMap").val("选取范围"); 
+	  addLngLat();
+		 //rectangle=map.getAllOverlays();
+		 rectangle=map.getAllOverlays();
+		 var startLng=[];
+		var startLat=[];
+		 var endLng=[];
+		var endLat=[];
+		 for(var i=0;i<rectangle[0].getPath().length;i++){
+		 startLng.push(rectangle[0].getPath()[i]['L']);
+		 startLat.push(rectangle[0].getPath()[i]['N']);
+		 } 
+		 startpoint=[startLng.sort()[0],startLat.sort()[startLat.length-1]];
+		 endpoint=[startLng.sort()[startLat.length-1],startLat.sort()[0]];
+		 startpointPixel=map.lnglatToPixel([startLng.sort()[0],startLat.sort()[startLat.length-1]], 10);
+		 endpointPixel=map.lnglatToPixel([startLng.sort()[startLat.length-1],startLat.sort()[0]], 10);
+		 countH=(endpointPixel['y']-startpointPixel['y']);
+		 countW=(endpointPixel['x']-startpointPixel['x']);
+    }
+	map.clearMap();
+    }, false);	
+	//var pixelpoints=[]
+	var lnglatpointsl=[]//左上角
+	var lnglatpointsr=[]//右下角
+	var nowmap=map;
+	*/
+	/*
+	var moveend = map.on('moveend', function(e) {
+	//if(){
+	//alert('ddd');
+	var l=map.containTolnglat(new AMap.Pixel(450, 150));
+	var r=map.containTolnglat(new AMap.Pixel(962, 662));
+	lnglatpointsl.push([l.getLng(),l.getLat()]);
+	lnglatpointsr.push([r.getLng(),r.getLat()]);
+	  // }
+	   }
+	)
+		var moveend = normalMaptu1.on('moveend', function(e) {
+	//if(){
+	//alert('ddd');
+	var l=normalMaptu1.containTolnglat(new AMap.Pixel(450, 150));
+	var r=normalMaptu1.containTolnglat(new AMap.Pixel(962, 662));
+	lnglatpointsl.push([l.getLng(),l.getLat()]);
+	lnglatpointsr.push([r.getLng(),r.getLat()]);
+	  // }
+	   }
+	)
+			var moveend = normalMaptu2.on('moveend', function(e) {
+	//if(){
+	//alert('ddd');
+	var l=normalMaptu2.containTolnglat(new AMap.Pixel(450, 150));
+	var r=normalMaptu2.containTolnglat(new AMap.Pixel(962, 662));
+	lnglatpointsl.push([l.getLng(),l.getLat()]);
+	lnglatpointsr.push([r.getLng(),r.getLat()]);
+	  // }
+	   }
+	)
+	*/
+	$("#swmm").append("<input type='button' class='rightbutton' value='导入数据' id='upload'/>");
+    AMap.event.addDomListener($('#upload').get(0), 'click', function() {  
+		
+		$("#openDataModal").modal('show');
+    }, false);
+		$("#swmm").append("<input type='button' class='rightbutton' value='模拟结果' id='simulation'/>");
+    AMap.event.addDomListener($('#simulation').get(0), 'click', function() {  
+		
+		$("#openSimulationModal").modal('show');
+    }, false);
+	$("#swmm").append("<input type='button' class='rightbutton' value='批量编辑' id='groupedit'/>");
+    AMap.event.addDomListener($('#groupedit').get(0), 'click', function() {  
+		
+		$("#groupeditModal").modal('show');
+    }, false);
+	
+	
+	
+	
+	
+	$("#swmm").append("<input type='button' class='rightbutton' value='工程缺省' id='default'/>");
+    AMap.event.addDomListener($('#default').get(0), 'click', function() {  
+		showDefaults();
+		$("#defaultsModal").modal('show');
+		
+    }, false);
+    
+
+ 
+	function addLngLat() {
+	
+	var moveend = nowmap.on('moveend', function(e) {
+	//if(){
+	//alert('ddd');
+	var l=nowmap.containTolnglat(new AMap.Pixel(450, 150));
+	var r=nowmap.containTolnglat(new AMap.Pixel(962, 662));
+	lnglatpointsl.push([l.getLng(),l.getLat()]);
+	lnglatpointsr.push([r.getLng(),r.getLat()]);
+	  // }
+	   }
+	)
+	}
+	
+	//绘制子流域
+  $("#swmm").append("<input type='button' class='rightbutton' value='绘制子流域' id='drawSub'/>");
+    AMap.event.addDomListener($('#drawSub').get(0), 'click', function() {  map.setDefaultCursor("crosshair");
+	drawLineArr=[];areArr=[];pixelArr=[];var mysub=[];mysub['ID']=ID;mysub['Type']="subcatchment";
+       mouseTool.polygon({fillColor:'#8000000F',fillOpacity:0,extData:mysub,bubble:true,strokeColor:'#00CED1',strokeWeight:4});//透明色
+    if($(this).hasClass("bianse")){
+$(this).removeClass("bianse")
+}else{
+$(this).addClass("bianse");}
+     eObjects=null;
+	
+	
+	}, false);	
+	
+	//完成覆盖物绘制时，关闭当前鼠标操作
+	mouseTool.on('draw',function(e){ 
+
+$('#drawSub').removeClass("bianse")
+
+	    eObjects = e.obj;
+		$("#tipinput").val(eObjects.getPath( ));
+		mouseTool.close();
+		if(eObjects.CLASS_NAME=='AMap.Polygon'){
+			var subID='Subcatchment{0}'.Format({0:ID});
+		drawLineArr.push(eObjects.getPath( ));
+		areArr.push(eObjects.getArea( ));
+		subArr['Subcatchment{0}'.Format({0:ID})]={};
+			subArr[subID]['ID']=ID;
+		subArr[subID]['PathLngLat']=drawLineArr[0].join('|').replace(/,/g,"_");
+		subArr[subID]['subArea']=areArr[0]/10000;
+	
+		subArr[subID]['Type']='subcatchment';
+		var sumLng = 0;
+		var sumLat=0;
+for (var j = 0; j < drawLineArr[0].length; j++) {
+		
+        sumLng+= drawLineArr[0][j].getLng();
+		sumLat+=drawLineArr[0][j].getLat();
+    };
+       var subX=(sumLng/drawLineArr[0].length*100)/100;
+	   var subY=(sumLat/drawLineArr[0].length*100)/100;
+		subArr[subID]['subX-coordinate']=subX;
+		subArr[subID]['subY-coordinate']=subY;
+		var myMarker=[];  
+		/*marker = new AMap.Marker({
+        map: map,
+		position: [subX, subY],
+		//offset: new AMap.Pixel(-30, -30),
+		draggable:false,
+		bubble:true,
+		topWhenClick:true, 
+		extData:myMarker,
+        icon: new AMap.Icon({            
+            imageSize: new AMap.Size(24,24),
+            image: "hex.png"
+        }) 
+		     
+	   })*/
+
+	   // myMarker['Type']="SubNode";
+		//ID++;
+		
+	
+subArr[subID]['subDescription']="";
+
+subArr[subID]['subTag']="";
+
+subArr[subID]['subRaingage']="";
+
+subArr[subID]['subOutlet']="*";
+
+subArr[subID]['subWidth']=Math.sqrt(10000*subArr[subID]['subArea']);
+
+subArr[subID]['subSlope']=defaults["defaultsubSlope"];
+
+subArr[subID]['subImprev']=defaults["defaultsubImprev"];
+
+subArr[subID]['subzeroImprev']=defaults["defaultsubzeroImprev"];
+
+subArr[subID]['subImprevN']=defaults["defaultsubImprevN"];
+
+subArr[subID]['subPrevN']=defaults["defaultsubPrevN"];
+
+subArr[subID]['subDstoreImprev']=defaults["defaultsubDstoreImprev"];
+
+subArr[subID]['subDstorePrev']=defaults["defaultsubDstorePrev"];
+
+subArr[subID]['subPercentRoute']=100;
+
+subArr[subID]['subRoute']='OUTLET'
+
+subArr[subID]['subGroundwater']=0;
+
+subArr[subID]['subSnow']=0;
+
+subArr[subID]['subLID']=0;
+
+subArr[subID]['subLanduse']=0;
+
+subArr[subID]['subBuildup']="NONE";
+
+subArr[subID]['subCurbLength']=0;
+
+subArr[subID]['subInflitration']=defaults["defaultInflitration"];
+
+subArr[subID]['MaxInfliRate']=defaults["defaultMaxInfliRate"];
+
+subArr[subID]['MinInfliRate']=defaults["defaultMinInfliRate"];
+
+subArr[subID]['Decay']=defaults["defaultDecay"];
+
+subArr[subID]['Dryingtime']=defaults["defaultDryingtime"];
+
+subArr[subID]['MaxVolume']=defaults["defaultMaxVolume"];
+
+subArr[subID]['SuctionHead']=defaults["defaultSuctionHead"];
+
+subArr[subID]['GreenConductivity']=defaults["defaultGreenConductivity"];
+
+subArr[subID]['InitialDeficit']=defaults["defaultInitialDeficit"];
+
+subArr[subID]['CurveNumber']=defaults["defaultCurveNumber"];
+
+subArr[subID]['Conductivity']=defaults["defaultConductivity"];
+
+subArr[subID]['curveDryingtime']=defaults["defaultcurveDryingtime"];
+
+ID++;
+
+	}
+})
+
+	
+	
+	
+	
+	
+	
+	
+	
+//增加节点
+	var clickListener=null;
+ $("#swmm").append("<input type='button' class='rightbutton' value='增加节点'   id='addNode'/>");
+    AMap.event.addDomListener($('#addNode').get(0), 'click', function() { 
+if($("#addNode").val() == "增加节点"){
+		if($(this).hasClass("bianse")){
+$(this).removeClass("bianse")
+}else{
+$(this).addClass("bianse");}
+	       $("#addNode").val("退出编辑");
+        map.setDefaultCursor("crosshair");
+        clickListener = AMap.event.addListener(map, "click", function(e) {
+		var myMarker=[];
+
+	   marker = new AMap.Marker({
+        map: map,
+		position: [e.lnglat.getLng(), e.lnglat.getLat()],
+		offset: new AMap.Pixel(-7, -7),
+		draggable:false,
+		bubble:true,
+		topWhenClick:true, 
+		//raiseOnDrag: true,
+		extData:myMarker,
+		//animation:"AMAP_ANIMATION_BOUNCE",
+        icon: new AMap.Icon({            
+            imageSize: new AMap.Size(14,14),
+            image: "circle.png"
+        })        
+	   })
+	   var nodeID='Node{0}'.Format({0:ID});
+	   nodesArr[nodeID]={};
+	   nodesArr[nodeID]['nodeX-coordinate']=(marker.getPosition( ).getLng());
+	   nodesArr[nodeID]['nodeY-coordinate']=(marker.getPosition( ).getLat());
+	    nodesArr[nodeID]['ID']=ID;
+		 nodesArr[nodeID]['Type']=('node');
+			   myMarker['ID']=ID;
+			   myMarker['Type']="node";		   
+nodesArr[nodeID]['nodeDescription']="";
+nodesArr[nodeID]['nodeTag']="";
+nodesArr[nodeID]['nodeInflow']="NO";
+nodesArr[nodeID]['nodeTreatment']="NO";
+nodesArr[nodeID]['nodeElevation']=defaults['defaultnodeInvert'];
+nodesArr[nodeID]['nodeDepth']=defaults['defaultnodeMaxdepth'];
+nodesArr[nodeID]['nodeInitialDepth']=0;
+nodesArr[nodeID]['nodeSurcharge']=0;
+nodesArr[nodeID]['nodePonded']=defaults['defaultnodePonded'];
+	   ID++;
+    });
+		}else
+		{if($(this).hasClass("bianse")){
+$(this).removeClass("bianse")
+}else{
+$(this).addClass("bianse");}
+		   $("#addNode").val("增加节点");
+            AMap.event.removeListener(clickListener);//移除事件，以绑定时返回的对象作为参数
+		}
+
+    }, false)
+	//绘制管道
+  var temp=[];
+ var markerclick=function(k) {
+		temp.push(k.target.getPosition());
+		temp.push(k.target.getExtData( )['ID']);
+		if(temp.length==2){
+		 mouseTool.polyline({
+		 bubble:true,
+		 strokeColor:'#3366FF',
+		 drawLineJoin:'round',
+		 drawLineCap:'round',
+		 strokeWeight: 4,
+		 strokeStyle: "dashed",
+		 });
+          }
+		  if(temp.length==4)
+		  {
+		  mouseTool.on('draw',function(e)
+		  {
+		  if(e.obj.CLASS_NAME=='AMap.Polyline')
+		  {
+		  e.obj.setMap(null);
+		  }
+		  mouseTool.close();
+		  })
+		  addPolydrawLine([temp[0],temp[2]]);
+		  var length=GetSingleDistance([temp[0],temp[2]])
+		  var pipeID='Pipe{0}'.Format({0:ID});
+		  pipeArr['Pipe{0}'.Format({0:ID})]={};
+		  pipeArr['Pipe{0}'.Format({0:ID})]['ID']=ID;
+		  pipeArr['Pipe{0}'.Format({0:ID})]['Type']='pipe';
+
+		  pipeArr['Pipe{0}'.Format({0:ID})]['pipeInletNode']=temp[1];
+		  pipeArr['Pipe{0}'.Format({0:ID})]['pipeOutletNode']=temp[3];
+		  pipeArr['Pipe{0}'.Format({0:ID})]['fromIDLngLat']=temp[0];
+		  pipeArr['Pipe{0}'.Format({0:ID})]['toIDLngLat']=temp[2];
+		  pipeArr['Pipe{0}'.Format({0:ID})]['pipeLength']=length;	
+	pipeArr[pipeID]['pipeDescription']="";
+	pipeArr[pipeID]['pipeTag']="";
+	pipeArr[pipeID]['pipeDepth']="1";
+	pipeArr[pipeID]['pipeShape']=defaults['defaultpipeShape'];
+	pipeArr[pipeID]['pipeRoughness']=defaults['defaultpipeRoughness'];
+	pipeArr[pipeID]['pipeInletOffset']=0;
+	pipeArr[pipeID]['pipeOutletOffset']=0;
+	pipeArr[pipeID]['pipeInitialFlow']=0;
+	pipeArr[pipeID]['pipeMaxFlow']=0;
+	pipeArr[pipeID]['pipeEntryLoss']=0;
+	pipeArr[pipeID]['pipeExitLoss']=0;
+	pipeArr[pipeID]['pipeAvgLoss']=0;
+	pipeArr[pipeID]['pipeFlapGate']="NO";
+		  temp=[];ID++;
+		  }
+	}
+ 
+    $("#swmm").append("<input type='button' class='rightbutton' value='绘制管道' id='drawLine'/>");
+    AMap.event.addDomListener($('#drawLine').get(0), 'click', function() { 
+	map.setDefaultCursor("crosshair");var overlaysList = map.getAllOverlays('marker');
+	var markers=new AMap.OverlayGroup(overlaysList);
+
+	if($("#drawLine").val() == "绘制管道")
+	{	if($(this).hasClass("bianse")){
+$(this).removeClass("bianse")
+}else{
+$(this).addClass("bianse");}
+	$("#drawLine").val("退出编辑");
+        markers.on('click',markerclick);
+    }
+
+	else
+	{if($(this).hasClass("bianse")){
+$(this).removeClass("bianse")
+}else{
+$(this).addClass("bianse");}
+	  $("#drawLine").val("绘制管道"); 
+		markers.off('click',markerclick);
+    }
+    }, false);
+
+	
+	
+	
+	
+	
+	
+	
+//增加排放口
+var clickListener=null;
+ $("#swmm").append("<input type='button' class='rightbutton' value='增加排放口'   id='addOutfall'/>");
+    AMap.event.addDomListener($('#addOutfall').get(0), 'click', function() { 
+if($("#addOutfall").val() == "增加排放口"){if($(this).hasClass("bianse")){
+$(this).removeClass("bianse")
+}else{
+$(this).addClass("bianse");}
+		
+	       $("#addOutfall").val("退出编辑");
+        map.setDefaultCursor("crosshair");
+        clickListener = AMap.event.addListener(map, "click", function(e) {
+		var myMarker=[];
+
+	   marker = new AMap.Marker({
+        map: map,
+		position: [e.lnglat.getLng(), e.lnglat.getLat()],
+		offset: new AMap.Pixel(-9, -9),
+		draggable:false,
+		bubble:true,
+		topWhenClick:true, 
+		//raiseOnDrag: true,
+		extData:myMarker,
+		//animation:"AMAP_ANIMATION_BOUNCE",
+        icon: new AMap.Icon({            
+            imageSize: new AMap.Size(18,18),
+            image: "triangles.png"
+        })        
+	   })
+	   var outfallID='Outfall{0}'.Format({0:ID});
+	   outfallArr['Outfall{0}'.Format({0:ID})]={};
+	   outfallArr['Outfall{0}'.Format({0:ID})]['outfallX-coordinate']=(marker.getPosition( ).getLng());
+	   outfallArr['Outfall{0}'.Format({0:ID})]['outfallY-coordinate']=(marker.getPosition( ).getLat());
+	   outfallArr['Outfall{0}'.Format({0:ID})]['ID']=ID;
+	   outfallArr['Outfall{0}'.Format({0:ID})]['Type']='outfall'
+			   myMarker['ID']=ID;
+			    myMarker['Type']="outfall";				
+outfallArr[outfallID]['outfallDescription']="";
+outfallArr[outfallID]['outfallTag']="";
+outfallArr[outfallID]['outfallTreatment']="NO";
+outfallArr[outfallID]['outfallElevation']=0;
+outfallArr[outfallID]['outfallTideGate']="NO";
+outfallArr[outfallID]['outfallType']='NORMAL';
+outfallArr[outfallID]['outfallStage']="NO";
+outfallArr[outfallID]['outfallCurve']="NO";
+outfallArr[outfallID]['outfallSeries']="NO";
+	   ID++;
+    });
+		}else
+		{if($(this).hasClass("bianse")){
+$(this).removeClass("bianse")
+}else{
+$(this).addClass("bianse");}
+		   $("#addOutfall").val("增加排放口");
+            AMap.event.removeListener(clickListener);//移除事件，以绑定时返回的对象作为参数
+		}
+
+    }, false)
+
+
+ 
+
+	
+//生成管道数据
+
+/*$("#swmm").append("<input type='button' class='rightbutton' value='节点数据' id='Nodedata'/>");
+ AMap.event.addDomListener($('#Nodedata').get(0), 'click', function() {
+ for(var node in nodesArr){
+		  allNode+=node+':'+nodesArr[node]+'*';
+		  }
+		saveFile((uri+Base64.encode(allNode)),'Node.txt');
+        }, false);
+		*/
+//生成节点数据
+
+/*
+$("#swmm").append("<input type='button' class='rightbutton' value='管道数据' id='Pipedata'/>");
+ <!-- <!-- AMap.event.addDomListener($('#Pipedata').get(0), 'click', function() { --> -->
+   <!-- <!-- for(var pipe in pipeArr){ --> -->
+		  <!-- <!-- allPipe+=pipe+':'+pipeArr[pipe]+'|'; --> -->
+		  <!-- <!-- } --> -->
+		<!-- <!-- saveFile((uri+Base64.encode(allPipe)),'Pipe.txt'); --> -->
+        <!-- <!-- }, false);  --> -->
+		*/
+		
+		
+//生成子流域数据
+
+/*
+$("#swmm").append("<input type='button' class='rightbutton' value='子流域数据' id='Subdata'/>");
+ AMap.event.addDomListener($('#Subdata').get(0), 'click', function() {
+ for(var sub in subArr){
+		allSub+=sub+':'+subArr[sub];
+		}
+        saveFile((uri+Base64.encode(allSub)),'Subcatchment.txt');
+        }, false);
+		*/
+		
+$("#swmm").append("<input type='button' class='rightbutton' value='保存数据' id='Savedata'/>");
+ AMap.event.addDomListener($('#Savedata').get(0), 'click', function() {
+
+
+var nodehead = [['ID','Type','nodeX-coordinate', 'nodeY-coordinate', 'nodeDescription', 'nodeTag', 'nodeTreatment', 'nodeElevation',
+'nodeDepth','nodeInitialDepth','nodeSurcharge','nodePonded']];
+var pipehead = [['ID','Type','pipeInletNode', 'pipeOutletNode', 'pipeDescription', 'pipeTag','pipeShape','pipeDepth', 'pipeLength',
+'pipeRoughness','pipeInletOffset','pipeOutletOffset','pipeInitialFlow','pipeMaxFlow','pipeEntryLoss','pipeExitLoss','pipeAvgLoss','pipeFlapGate']];
+var outfallhead = [['ID','Type','outfallX-coordinate', 'outfallY-coordinate', 'outfallDescription', 'outfallTag', 'outfallTreatment', 'outfallElevation','outfallTideGate','outfallType',
+'outfallStage','outfallCurve','outfallSeries']];
+var subhead = [['ID','Type', 'subX-coordinate', 'subY-coordinate','subDescription', 'subTag', 'subRaingage',
+'subOutlet','subArea','subWidth','subSlope','subImprev','subImprevN','subDstoreImprev','subDstorePrev','subPrevN',
+'subPercentRoute','subzeroImprev','subRoute','subGroundwater','subSnow','subLanduse','subBuildup','subCurbLength','subInflitration','MaxInfliRate',
+'MinInfliRate','Decay','Dryingtime','MaxVolume','SuctionHead','GreenConductivity','InitialDeficit','CurveNumber','Conductivity','curveDryingtime'
+,'PathLngLat'
+]];
+
+for(var s in subArr){
+subhead.push([subArr[s]['ID'],subArr[s]['Type'],subArr[s]['subX-coordinate'],subArr[s]['subY-coordinate'],subArr[s]['subDescription'],
+subArr[s]['subTag'],subArr[s]['subRaingage'],subArr[s]['subOutlet'],subArr[s]['subArea'],
+subArr[s]['subWidth'],subArr[s]['subSlope'],subArr[s]['subImprev'],subArr[s]['subImprevN'],subArr[s]['subDstoreImprev'],subArr[s]['subDstorePrev'],
+subArr[s]['subPrevN'],subArr[s]['subPercentRoute'],subArr[s]['subzeroImprev'],subArr[s]['subRoute'],
+subArr[s]['subGroundwater'],subArr[s]['subSnow'],subArr[s]['subLanduse'],subArr[s]['subBuildup'],
+subArr[s]['subCurbLength'],subArr[s]['subInflitration'],
+subArr[s]['MaxInfliRate'],subArr[s]['MinInfliRate'],subArr[s]['Decay'],subArr[s]['Dryingtime'],subArr[s]['MaxVolume'],
+subArr[s]['SuctionHead'],subArr[s]['GreenConductivity'],subArr[s]['InitialDeficit'],subArr[s]['CurveNumber'],subArr[s]['Conductivity'],subArr[s]['curveDryingtime'],subArr[s]['PathLngLat']
+
+
+
+
+]);
+}
+
+for(var n in nodesArr) { 
+    nodehead.push([nodesArr[n]['ID'],nodesArr[n]['Type'],nodesArr[n]['nodeX-coordinate'],nodesArr[n]['nodeY-coordinate'],
+	nodesArr[n]['nodeDescription'],nodesArr[n]['nodeTag'],nodesArr[n]['nodeTreatment'],nodesArr[n]['nodeElevation'],
+	nodesArr[n]['nodeDepth'],nodesArr[n]['nodeInitialDepth'],nodesArr[n]['nodeSurcharge'],nodesArr[n]['nodePonded']]
+	); 
+} 
+for(var p in pipeArr){
+pipehead.push([pipeArr[p]['ID'],pipeArr[p]['Type'],pipeArr[p]['pipeInletNode'],pipeArr[p]['pipeOutletNode'],pipeArr[p]['pipeDescription'],
+pipeArr[p]['pipeTag'],pipeArr[p]['pipeShape'],pipeArr[p]['pipeDepth'],pipeArr[p]['pipeLength'],pipeArr[p]['pipeRoughness'],pipeArr[p]['pipeInletOffset'],
+pipeArr[p]['pipeOutletOffset'],pipeArr[p]['pipeInitialFlow'],pipeArr[p]['pipeMaxFlow'],pipeArr[p]['pipeEntryLoss'],pipeArr[p]['pipeExitLoss'],
+pipeArr[p]['pipeAvgLoss'],pipeArr[p]['pipeFlapGate']
+]
+)};
+
+for(var n in outfallArr) { 
+    outfallhead.push([outfallArr[n]['ID'],outfallArr[n]['Type'],outfallArr[n]['outfallX-coordinate'],outfallArr[n]['outfallY-coordinate'],
+	outfallArr[n]['outfallDescription'],outfallArr[n]['outfallTag'],outfallArr[n]['outfallTreatment'],outfallArr[n]['outfallElevation'],
+	outfallArr[n]['outfallTideGate'],outfallArr[n]['outfallType'],outfallArr[n]['outfallStage'],outfallArr[n]['outfallCurve'],outfallArr[n]['outfallSeries']]
+	); 
+} 
+
+var csvRowsNode = []; 
+for (var j = 0; j < nodehead.length; j++) { 
+    csvRowsNode.push(nodehead[j].join(',')) 
+} 
+//s4. 把新数组用 \n 回车连接，形成csvString 
+var csvStringNode = csvRowsNode.join('\n'); 
+//BOM的方式解决EXCEL乱码问题 
+var BOM = '\uFEFF'; 
+//csvStringNode = BOM + csvStringNode; 
+
+var csvRowsPipe = []; 
+for (var j = 0; j < pipehead.length; j++) { 
+    csvRowsPipe.push(pipehead[j].join(',')) 
+} 
+var csvStringPipe = csvRowsPipe.join('\n'); 
+var BOM = '\uFEFF'; 
+//csvStringOutfall = BOM + csvStringOutfall; 
+
+var csvRowsOutfall = []; 
+for (var j = 0; j < outfallhead.length; j++) { 
+    csvRowsOutfall.push(outfallhead[j].join(',')) 
+} 
+var csvStringOutfall = csvRowsOutfall.join('\n'); 
+var BOM = '\uFEFF'; 
+//csvStringOutfall = BOM + csvStringOutfall; 
+
+var csvRowsSubcatchment = []; 
+for (var j = 0; j < subhead.length; j++) { 
+    csvRowsSubcatchment.push(subhead[j].join(',')) 
+} 
+var csvStringSubcatchment = csvRowsSubcatchment.join('\n'); 
+var BOM = '\uFEFF'; 
+//csvStringSubcatchment = BOM + csvStringSubcatchment; 
+var warning=""
+for( var s in subArr)
+{
+if(subArr[s]['subOutlet']=='*')
+{
+warning+=s+" "
+}
+}
+if(warning!="")
+{
+alert("注意！以下子流域未设置出口"+warning);
+saveFile((uri+Base64.encode(csvStringSubcatchment+'\n'+csvStringNode+'\n'+csvStringPipe+'\n'+csvStringOutfall)),'Datas.csv');
+}
+else{
+saveFile((uri+Base64.encode(csvStringSubcatchment+'\n'+csvStringNode+'\n'+csvStringPipe+'\n'+csvStringOutfall)),'Datas.csv');
+}
+        }, false);
+
+//下半部分---------------------------------------------------------------------------------		
+//全屏
+$("#setmap").prepend("<input type='button' class='bottombutton' value='全屏' id='fullScreen'/>");
+    AMap.event.addDomListener($('#fullScreen').get(0), 'click', function() {
+		if($("#fullScreen").val() == "全屏"){
+	       $("#fullScreen").val("关闭全屏");
+		   $('#measureDistance').hide();$('#measureArea').hide();
+		   //$('#drawLine').hide();
+		   $('#drawSub').hide();
+		    $('#captureSub').hide();$('#search').hide();
+		   $('#Subdata').hide();$('#captureSub').hide();
+		   $('#searchByLngLat').hide();$('#traffic').hide();
+		    $('#normalMap').hide();$('#roadnet').hide();
+		   $('#boundary').hide();$('#tipinput').hide();
+		   $('#Pipedata').hide();$('#drawLine').hide();$('#addNode').hide();
+		   $('#getLngLat').hide(); $('#Nodedata').hide();$('#showID').hide();
+		   $('#addOutfall').hide();$('#upload').hide();$('#default').hide();$('#Savedata').hide();
+		   $('#groupedit').hide();$('#simulation').hide();
+		   
+		}else{
+		   $("#fullScreen").val("全屏");		       
+	   $('#measureDistance').show();$('#measureArea').show();
+		   //$('#drawLine').show();
+		   $('#drawSub').show();
+		    $('#captureSub').show();$('#search').show();
+		   $('#Subdata').show();$('#captureSub').show();
+		   $('#searchByLngLat').show();$('#traffic').show();
+		    $('#normalMap').show();$('#roadnet').show();
+		   $('#boundary').show();$('#tipinput').show();
+		   $('#Pipedata').show();$('#drawLine').show();$('#addNode').show();
+		   $('#getLngLat').show();$('#Nodedata').show();$('#showID').show();
+		   $('#addOutfall').show();$('#upload').show();$('#default').show();$('#Savedata').show();
+		   $('#groupedit').show();$('#simulation').show();
+		   }
+    }, false);	
+	
+
+
+
+   //实时路况
+   $("#setmap").prepend("<input type='button' class='bottombutton' value='显示路况' id='traffic'/>");
+   var trafficLayer = new AMap.TileLayer.Traffic({
+        zIndex: 10,
+		visible: false
+    });
+	trafficLayer.setMap(map);
+    AMap.event.addDomListener($('#traffic').get(0), 'click', function() {
+		if($("#traffic").val() == "显示路况"){
+	       $("#traffic").val("隐藏路况");
+            trafficLayer.show();
+		}else{
+		   $("#traffic").val("显示路况");
+           trafficLayer.hide();
+		}
+    }, false);
+
+    
+    //常规图
+  $("#setmap").prepend("<input type='button' class='bottombutton' value='常规图' id='normalMap'/>");
+	
+	
+    AMap.event.addDomListener($('#normalMap').get(0), 'click', function() {
+		if($("#normalMap").val() == "常规图"){
+	       $("#normalMap").val("卫星图");
+		   //$('#roadnet').show();
+		   var normalMaptu1=new AMap.Map('mapcontainer',{map: map,features : ['bg','building'], mapStyle: '4284a4e38163df4761dbcebcc7264c1d',zIndex: 1,visible: false,labelzIndex:2,zoom:15});
+		   mouseTool= new AMap.MouseTool(normalMaptu1);
+		   window.map = normalMaptu1;
+		   nowmap=normalMaptu1;
+		}else{
+		   $("#normalMap").val("常规图");
+		      var map = new AMap.Map('mapcontainer', {
+        resizeEnable: true,
+        zoom:11,
+		features : ['bg', 'point'],
+		 layers: [new AMap.TileLayer.Satellite()],
+		 zoom:15,
+		labelzIndex:1
+    });
+	window.map = map;
+		}
+    }, false);
+
+    //路网
+	$("#setmap").prepend("<input type='button' class='bottombutton' value='显示路网' id='roadnet' />");
+	var roadnet=new AMap.TileLayer.RoadNet({map: map, zIndex: 2,visible: false});
+    AMap.event.addDomListener($('#roadnet').get(0), 'click', function() {
+	if($("#normalMap").val() == "常规图"){
+		if($("#roadnet").val() == "显示路网"){
+	       $("#roadnet").val("隐藏路网");
+		   roadnet.show();
+		}else{
+		   $("#roadnet").val("显示路网");
+		   roadnet.hide();
+		}
+		}
+		if($("#normalMap").val() == "卫星图"){
+		if($("#roadnet").val() == "显示路网"){
+	       $("#roadnet").val("隐藏路网");
+		   var normalMaptu2=new AMap.Map('mapcontainer',{map: map,viewMode:'2D',features : ['bg','building','road'], mapStyle: 'amap://styles/2c494b366533dc559951ab6142f76e71',zIndex: 1,visible: false,labelzIndex:2,zoom:15});
+		   mouseTool= new AMap.MouseTool(normalMaptu2);
+		   window.map = normalMaptu2;
+		   nowmap=normalMaptu2
+		}else{
+		   $("#roadnet").val("显示路网");
+		   var normalMaptu3=new AMap.Map('mapcontainer',{map: map,viewMode:'2D',features : ['bg','building'], mapStyle: 'amap://styles/4284a4e38163df4761dbcebcc7264c1d',zIndex: 1,visible: false,labelzIndex:2,zoom:15});
+		   mouseTool= new AMap.MouseTool(normalMaptu3);
+		   window.map = normalMaptu3;
+		}
+		}
+    }, false);
+
+   //边界
+ $("#setmap").prepend("<input type='button' class='bottombutton' value='添加边界' id='boundary'/>");
+   AMap.event.addDomListener($('#boundary').get(0), 'click', function() {
+		if($("#boundarypool").is(":hidden")){
+	       $('#boundarypool').show();
+		}else{
+		   $('#boundarypool').hide();
+		}
+    }, false);
+
+   AMap.event.addDomListener($('#boundaryok').get(0), 'click', function() {
+	  boundarys.forEach(function(i){
+       map.remove(i);
+	  });
+      boundarys=[];
+      var districtSearch = new AMap.DistrictSearch({
+            extensions: 'all',  //返回行政区边界坐标组等具体信息
+			level : 'country',  
+            subdistrict : 1 
+       });	
+    $('input[name="city"]:checked').each(function(){ 
+        districtSearch.search($(this).val(), function(status, result){
+            var bounds = result.districtList[0].boundaries;
+            var polygon = new AMap.Polygon({  //行政区边界渲染，使用多边形覆盖物实现
+                map: map,
+                strokeWeight: 3,
+                path: bounds,
+                fillOpacity: 0,
+                fillColor: '#F33',
+                strokeColor: '#F33'
+                });
+			boundarys.push(polygon);
+       }); 
+    }); 
+    $('#boundarypool').hide();
+    }, false);
+
+//------------------------------------------------------------------------------------------------------------
+//其他函数
+//------------------------------------------------------------------------------------------------------------
+function importPointInfo(fileInfo) {
+    var file = fileInfo.files[0].name;
+    loadPointByFile(file);
+}
+function importPipeInfo(fileInfo) {
+    var file = fileInfo.files[0].name;
+    loadPipeByFile(file);
+}
+function importNodeRInfo(fileInfo) {
+    var file = fileInfo.files[0].name;
+    loadPointRByFile(file);
+}
+function importPipeRInfo(fileInfo) {
+    var file = fileInfo.files[0].name;
+    loadPipeRByFile(file);
+}
+function importResultInfo(fileInfo) {
+    var file = fileInfo.files[0].name;
+    loadResultsByFile(file);
+}
+
+
+function AddPipe(pipe){
+var fromLngLat=[0,0];
+var toLngLat=[0,0];
+	   var fromID=Number(pipe.split(",")[0].split('"')[0]);
+	   var toID=Number(pipe.split(",")[1].split('"')[0]);
+
+for(var n in nodesArr) { 
+
+  if(nodesArr[n]['ID']==fromID)
+  { 
+
+   fromLngLat=[nodesArr[n]['nodeX-coordinate'],nodesArr[n]['nodeY-coordinate']];
+  }
+  if(nodesArr[n]['ID']==toID)
+  { 
+   toLngLat=[nodesArr[n]['nodeX-coordinate'],nodesArr[n]['nodeY-coordinate']];
+  }
+
+if (fromLngLat[0]!=0 && toLngLat[0]!=0)
+{
+break;
+}
+}
+//alert((fromLngLat[0],fromLngLat[1]),(toLngLat[0],toLngLat[1]))
+//alert(new AMap.LngLat(fromLngLat[0],fromLngLat[1]),new AMap.LngLat(toLngLat[0],toLngLat[1]))
+if (fromLngLat[0]!=0 && toLngLat[0]!=0)
+	   		  {addPolydrawLine([fromLngLat,toLngLat]);
+		  var length=GetSingleDistance([new AMap.LngLat(fromLngLat[0],fromLngLat[1]),new AMap.LngLat(toLngLat[0],toLngLat[1])]);
+
+		  var pipeID='Pipe{0}'.Format({0:ID});
+		  pipeArr['Pipe{0}'.Format({0:ID})]={};
+		  pipeArr['Pipe{0}'.Format({0:ID})]['ID']=ID;
+		  pipeArr['Pipe{0}'.Format({0:ID})]['Type']='pipe';
+
+		  pipeArr['Pipe{0}'.Format({0:ID})]['pipeInletNode']=fromID;
+		  pipeArr['Pipe{0}'.Format({0:ID})]['pipeOutletNode']=toID;
+		  pipeArr['Pipe{0}'.Format({0:ID})]['fromIDLngLat']=fromLngLat;
+		  pipeArr['Pipe{0}'.Format({0:ID})]['toIDLngLat']=toLngLat;
+		  pipeArr['Pipe{0}'.Format({0:ID})]['pipeLength']=length;	
+	pipeArr[pipeID]['pipeDescription']="";
+	pipeArr[pipeID]['pipeTag']="";
+	pipeArr[pipeID]['pipeDepth']=Number(pipe.split(",")[2].split('"')[0]);
+	pipeArr[pipeID]['pipeShape']=defaults['defaultpipeShape'];
+	pipeArr[pipeID]['pipeRoughness']=defaults['defaultpipeRoughness'];
+	pipeArr[pipeID]['pipeInletOffset']=0;
+	pipeArr[pipeID]['pipeOutletOffset']=0;
+	pipeArr[pipeID]['pipeInitialFlow']=0;
+	pipeArr[pipeID]['pipeMaxFlow']=0;
+	pipeArr[pipeID]['pipeEntryLoss']=0;
+	pipeArr[pipeID]['pipeExitLoss']=0;
+	pipeArr[pipeID]['pipeAvgLoss']=0;
+	pipeArr[pipeID]['pipeFlapGate']="NO";
+	ID++;
+	}
+}
+function loadPointByFile(fileName) {
+    //delRentLocation();
+    var point_locations = new Set();
+    $.get(fileName, function(data) {
+        data = data.split("\n");
+        data.forEach(function(item, index) {
+		if(item!="")
+            {point_locations.add(item);}
+			//alert(item)
+        });
+		//alert(point_locations[0])
+        point_locations.forEach(function(element, index) {
+		AddPoints(element);
+    });
+	})
+}
+function AddPoints(point){
+            var myMarker=[];
+			<!-- if(Number(point.split(",")[3].split('"')[0])==100) -->
+			<!-- {	   marker = new AMap.Marker({ -->
+        <!-- map: map, -->
+		<!-- position: new AMap.LngLat(Number(point.split(",")[1].split('"')[0]),Number(point.split(",")[2].split('"')[0])), -->
+		<!-- offset: new AMap.Pixel(-4, -4), -->
+		<!-- draggable:false, -->
+		<!-- bubble:true, -->
+		<!-- topWhenClick:true,  -->
+		<!-- //raiseOnDrag: true, -->
+		<!-- extData:myMarker, -->
+		<!-- //animation:"AMAP_ANIMATION_BOUNCE", -->
+        <!-- icon: new AMap.Icon({             -->
+            <!-- imageSize: new AMap.Size(8,8), -->
+            <!-- image: "label0.png" -->
+        <!-- })         -->
+        <!-- });} -->
+		//alert(Number(point.split(",")[1].split('"')[0]),Number(point.split(",")[2].split('"')[0]))
+	   if(Number(point.split(",")[3].split('"')[0])!=100){
+	   marker = new AMap.Marker({
+        map: map,
+		position: new AMap.LngLat(Number(point.split(",")[1].split('"')[0]),Number(point.split(",")[2].split('"')[0])),
+		offset: new AMap.Pixel(-5, -5),
+		draggable:false,
+		bubble:true,
+		topWhenClick:true, 
+		visible:true,
+		//raiseOnDrag: true,
+		extData:myMarker,
+		//animation:"AMAP_ANIMATION_BOUNCE",
+        icon: new AMap.Icon({            
+            imageSize: new AMap.Size(10,10),
+            image: "circle.png"
+			
+        })        
+        });
+		//alert([new AMap.LngLat(parseFloat(point.split(",")[0].split('"')[1]),parseFloat(point.split(",")[1].split('"')[0]))])
+	   //nodesArr['Node{0}'.Format({0:ID})]=(marker.getPosition( ));
+	  // myMarker['ID']=Number(point.split(",")[0].split('"')[0]);
+	  // myMarker['nodeElevation']=Number(point.split(",")[3].split('"')[0]);
+	  // myMarker['nodeSurcharge']=Number(point.split(",")[4].split('"')[0]);
+var nodeID='Node{0}'.Format({0:Number(point.split(",")[0].split('"')[0])})
+	   nodesArr[nodeID]={};
+	   nodesArr[nodeID]['nodeX-coordinate']=(marker.getPosition( ).getLng());
+	   nodesArr[nodeID]['nodeY-coordinate']=(marker.getPosition( ).getLat());
+	    nodesArr[nodeID]['ID']=Number(point.split(",")[0].split('"')[0]);
+		 nodesArr[nodeID]['Type']=('node');
+			   myMarker['ID']=Number(point.split(",")[0].split('"')[0]);
+			   myMarker['Type']="node";		   
+nodesArr[nodeID]['nodeDescription']="";
+nodesArr[nodeID]['nodeTag']="";
+nodesArr[nodeID]['nodeInflow']="NO";
+nodesArr[nodeID]['nodeTreatment']="NO";
+nodesArr[nodeID]['nodeElevation']=Number(point.split(",")[3].split('"')[0]);
+nodesArr[nodeID]['nodeDepth']=defaults['defaultnodeMaxdepth'];
+nodesArr[nodeID]['nodeInitialDepth']=0;
+//nodesArr[nodeID]['nodeSurcharge']=defaults['defaultnodeSurcharge'];
+nodesArr[nodeID]['nodeSurcharge']="0";
+nodesArr[nodeID]['nodePonded']=defaults['defaultnodePonded'];
+//nodesArr[nodeID]['Diameter']=Number(point.split(",")[4].split('"')[0]);
+}
+}
+function loadPipeByFile(fileName) {
+    //delRentLocation();
+    var point_locations = new Set();
+    $.get(fileName, function(data) {
+        data = data.split("\n");
+        data.forEach(function(item, index) {
+		if(item!="")
+            {point_locations.add(item);}
+			//alert(item)
+        });
+		//alert(point_locations[0])
+        point_locations.forEach(function(element, index) {
+		AddPipe(element);
+    });
+	})
+}
+
+
+//alert(Number(result.split(",")[2].split('"')[0]))
+<!-- if(Number(result.split(",")[2].split('"')[0])<0.03 && Number(result.split(",")[2].split('"')[0])>0) -->
+         <!-- {   var myMarker=[]; -->
+	   <!-- marker = new AMap.Marker({ -->
+        <!-- map: map, -->
+		<!-- position: new AMap.LngLat(Number(result.split(",")[0].split('"')[0]),Number(result.split(",")[1].split('"')[0])), -->
+		<!-- offset: new AMap.Pixel(-8, -8), -->
+		<!-- draggable:false, -->
+		<!-- bubble:true, -->
+		<!-- topWhenClick:true,  -->
+		<!-- //raiseOnDrag: true, -->
+		<!-- extData:myMarker, -->
+		<!-- //animation:"AMAP_ANIMATION_BOUNCE", -->
+        <!-- icon: new AMap.Icon({             -->
+            <!-- imageSize: new AMap.Size(16,20), -->
+            <!-- image: "label0.png" -->
+        <!-- })         -->
+        <!-- }); -->
+		<!-- } -->
+<!-- else if(Number(result.split(",")[2].split('"')[0])<0.06) -->
+         <!-- {   var myMarker=[]; -->
+	   <!-- marker = new AMap.Marker({ -->
+        <!-- map: map, -->
+		<!-- position: new AMap.LngLat(Number(result.split(",")[0].split('"')[0]),Number(result.split(",")[1].split('"')[0])), -->
+		<!-- offset: new AMap.Pixel(-8, -8), -->
+		<!-- draggable:false, -->
+		<!-- bubble:true, -->
+		<!-- topWhenClick:true,  -->
+		<!-- //raiseOnDrag: true, -->
+		<!-- extData:myMarker, -->
+		<!-- //animation:"AMAP_ANIMATION_BOUNCE", -->
+        <!-- icon: new AMap.Icon({             -->
+            <!-- imageSize: new AMap.Size(16,20), -->
+            <!-- image: "label2.png" -->
+        <!-- })         -->
+        <!-- }); -->
+		<!-- } -->
+		<!-- else if(Number(result.split(",")[2].split('"')[0])<0.09) -->
+         <!-- {   var myMarker=[]; -->
+	   <!-- marker = new AMap.Marker({ -->
+        <!-- map: map, -->
+		<!-- position: new AMap.LngLat(Number(result.split(",")[0].split('"')[0]),Number(result.split(",")[1].split('"')[0])), -->
+		<!-- offset: new AMap.Pixel(-8, -8), -->
+		<!-- draggable:false, -->
+		<!-- bubble:true, -->
+		<!-- topWhenClick:true,  -->
+		<!-- //raiseOnDrag: true, -->
+		<!-- extData:myMarker, -->
+		<!-- //animation:"AMAP_ANIMATION_BOUNCE", -->
+        <!-- icon: new AMap.Icon({             -->
+            <!-- imageSize: new AMap.Size(16,20), -->
+            <!-- image: "label4.png" -->
+        <!-- })         -->
+        <!-- }); -->
+		<!-- } -->
+		<!-- else if(Number(result.split(",")[2].split('"')[0])<0.12) -->
+         <!-- {   var myMarker=[]; -->
+	   <!-- marker = new AMap.Marker({ -->
+        <!-- map: map, -->
+		<!-- position: new AMap.LngLat(Number(result.split(",")[0].split('"')[0]),Number(result.split(",")[1].split('"')[0])), -->
+		<!-- offset: new AMap.Pixel(-8, -8), -->
+		<!-- draggable:false, -->
+		<!-- bubble:true, -->
+		<!-- topWhenClick:true,  -->
+		<!-- //raiseOnDrag: true, -->
+		<!-- extData:myMarker, -->
+		<!-- //animation:"AMAP_ANIMATION_BOUNCE", -->
+        <!-- icon: new AMap.Icon({             -->
+            <!-- imageSize: new AMap.Size(16,20), -->
+            <!-- image: "label6.png" -->
+        <!-- })         -->
+        <!-- }); -->
+		<!-- } -->
+		<!-- else if(Number(result.split(",")[2].split('"')[0])<0.15) -->
+         <!-- {   var myMarker=[]; -->
+	   <!-- marker = new AMap.Marker({ -->
+        <!-- map: map, -->
+		<!-- position: new AMap.LngLat(Number(result.split(",")[0].split('"')[0]),Number(result.split(",")[1].split('"')[0])), -->
+		<!-- offset: new AMap.Pixel(-8, -8), -->
+		<!-- draggable:false, -->
+		<!-- bubble:true, -->
+		<!-- topWhenClick:true,  -->
+		<!-- //raiseOnDrag: true, -->
+		<!-- extData:myMarker, -->
+		<!-- //animation:"AMAP_ANIMATION_BOUNCE", -->
+        <!-- icon: new AMap.Icon({             -->
+            <!-- imageSize: new AMap.Size(16,20), -->
+            <!-- image: "label8.png" -->
+        <!-- })         -->
+        <!-- }); -->
+		<!-- } -->
+				<!-- else if(Number(result.split(",")[2].split('"')[0])<0.20) -->
+         <!-- {   var myMarker=[]; -->
+	   <!-- marker = new AMap.Marker({ -->
+        <!-- map: map, -->
+		<!-- position: new AMap.LngLat(Number(result.split(",")[0].split('"')[0]),Number(result.split(",")[1].split('"')[0])), -->
+		<!-- offset: new AMap.Pixel(-8, -8), -->
+		<!-- draggable:false, -->
+		<!-- bubble:true, -->
+		<!-- topWhenClick:true,  -->
+		<!-- //raiseOnDrag: true, -->
+		<!-- extData:myMarker, -->
+		<!-- //animation:"AMAP_ANIMATION_BOUNCE", -->
+        <!-- icon: new AMap.Icon({             -->
+            <!-- imageSize: new AMap.Size(16,20), -->
+            <!-- image: "label10.png" -->
+        <!-- })         -->
+        <!-- }); -->
+		<!-- } -->
+		<!-- else if(Number(result.split(",")[2].split('"')[0])<0.21) -->
+         <!-- {   var myMarker=[]; -->
+	   <!-- marker = new AMap.Marker({ -->
+        <!-- map: map, -->
+		<!-- position: new AMap.LngLat(Number(result.split(",")[0].split('"')[0]),Number(result.split(",")[1].split('"')[0])), -->
+		<!-- offset: new AMap.Pixel(-8, -8), -->
+		<!-- draggable:false, -->
+		<!-- bubble:true, -->
+		<!-- topWhenClick:true,  -->
+		<!-- //raiseOnDrag: true, -->
+		<!-- extData:myMarker, -->
+		<!-- //animation:"AMAP_ANIMATION_BOUNCE", -->
+        <!-- icon: new AMap.Icon({             -->
+            <!-- imageSize: new AMap.Size(16,20), -->
+            <!-- image: "label12.png" -->
+        <!-- })         -->
+        <!-- }); -->
+		<!-- } -->
+		<!-- else  -->
+         <!-- {   var myMarker=[]; -->
+	   <!-- marker = new AMap.Marker({ -->
+        <!-- map: map, -->
+		<!-- position: new AMap.LngLat(Number(result.split(",")[0].split('"')[0]),Number(result.split(",")[1].split('"')[0])), -->
+		<!-- offset: new AMap.Pixel(-8, -8), -->
+		<!-- draggable:false, -->
+		<!-- bubble:true, -->
+		<!-- topWhenClick:true,  -->
+		<!-- //raiseOnDrag: true, -->
+		<!-- extData:myMarker, -->
+		<!-- //animation:"AMAP_ANIMATION_BOUNCE", -->
+        <!-- icon: new AMap.Icon({             -->
+            <!-- imageSize: new AMap.Size(16,20), -->
+            <!-- image: "label14.png" -->
+        <!-- })         -->
+        <!-- }); -->
+		<!-- } -->
+	
+
+   
+var maxcount=0;
+function AddResults(heatmapData){
+    var list = [];
+    var i = -1, length = heatmapData.length;
+    while (++i < length) {
+        var item = heatmapData[i];
+		if(Number(item.split(",")[0].split('"')[0])>=0.01)
+       { list.push({
+			lat:Number(item.split(",")[2].split('"')[0]),
+            lng: Number(item.split(",")[1].split('"')[0]),
+            count: Number(item.split(",")[0].split('"')[0])
+        })
+		if(Number(item.split(",")[0].split('"')[0])>maxcount)
+		{
+		maxcount=Number(item.split(",")[0].split('"')[0]);
+		}
+		 var myMarker=[];
+	   marker = new AMap.Marker({
+        map: map,
+		position: new AMap.LngLat(Number(item.split(",")[1].split('"')[0]),Number(item.split(",")[2].split('"')[0])),
+		offset: new AMap.Pixel(-2, -2),
+		draggable:false,
+		bubble:true,
+		topWhenClick:true, 
+		//raiseOnDrag: true,
+		extData:myMarker,
+		//animation:"AMAP_ANIMATION_BOUNCE",
+        icon: new AMap.Icon({            
+            imageSize: new AMap.Size(4,4),
+            image: "circle.png"
+        })        
+        });
+		var infoWindow = new AMap.InfoWindow({offset: new AMap.Pixel(0, -10),
+		size: new AMap.Size(240,125)});
+		marker.content = "经纬度："+ new AMap.LngLat(Number(item.split(",")[1].split('"')[0]),Number(item.split(",")[2].split('"')[0]))+'\n'+'水深为' + (Number(item.split(",")[0].split('"')[0]).toFixed(4)) + 'm';
+		 marker.on('mouseover', function (e) 
+	{	
+	 infoWindow.setContent(e.target.content);
+        infoWindow.open(map, e.target.getPosition());
+	})
+		
+		
+		
+		}
+    }
+
+var heatmap;
+    map.plugin(["AMap.Heatmap"], function() {
+        //初始化heatmap对象
+        heatmap = new AMap.Heatmap(map, {
+            radius: 25, //给定半径
+            opacity: [0.1, 0.8]
+            ,gradient:{
+             0.5: 'blue',
+             0.65: 'rgb(117,211,248)',
+             0.7: 'rgb(0, 255, 0)',
+             0.9: '#ffea00',
+             1.0: 'red'
+             }
+        });
+        //设置数据集
+        heatmap.setDataSet({
+            data: list,
+            max: 0.35//maxcount
+        });
+    });
+		
+}
+
+var resultlist=[]
+function loadResultsByFile(fileName) {
+    //delRentLocation();
+    var point_locations = new Set();
+    $.get(fileName, function(data) {
+        data = data.split("\n");
+        data.forEach(function(item, index) {
+		if(item!="")
+            {point_locations.add(item);}
+			//alert(item)
+        });
+		//alert(point_locations[0])
+        point_locations.forEach(function(element, index) {
+		//AddResults(element);
+		resultlist.push(element)
+    });
+	AddResults(resultlist)
+	})
+}
+
+function loadPointRByFile(fileName) {
+    //delRentLocation();
+    var point_locations = new Set();
+    $.get(fileName, function(data) {
+        data = data.split("\n");
+        data.forEach(function(item, index) {
+		if(item!="")
+            {point_locations.add(item);}
+			//alert(item)
+        });
+		//alert(point_locations[0])
+        point_locations.forEach(function(element, index) {
+		AddPointsR(element);
+    });
+	})
+}
+function AddPointsR(point){
+            var myMarker=[];
+			<!-- if(Number(point.split(",")[3].split('"')[0])==100) -->
+			<!-- {	   marker = new AMap.Marker({ -->
+        <!-- map: map, -->
+		<!-- position: new AMap.LngLat(Number(point.split(",")[1].split('"')[0]),Number(point.split(",")[2].split('"')[0])), -->
+		<!-- offset: new AMap.Pixel(-4, -4), -->
+		<!-- draggable:false, -->
+		<!-- bubble:true, -->
+		<!-- topWhenClick:true,  -->
+		<!-- //raiseOnDrag: true, -->
+		<!-- extData:myMarker, -->
+		<!-- //animation:"AMAP_ANIMATION_BOUNCE", -->
+        <!-- icon: new AMap.Icon({             -->
+            <!-- imageSize: new AMap.Size(8,8), -->
+            <!-- image: "label0.png" -->
+        <!-- })         -->
+        <!-- });} -->
+	   if(point.split(",")[0].split('"')[0]!="Name" && Number(point.split(",")[5].split('"')[0])!=0){
+	   var n='Node{0}'.Format({0:point.split(",")[0].split('"')[0]})
+	   //alert(Number(nodesArr[n]['nodeX-coordinate']))
+	   marker = new AMap.Marker({
+        map: map,
+		position: new AMap.LngLat(Number(nodesArr[n]['nodeX-coordinate']),Number(nodesArr[n]['nodeY-coordinate'])),
+		offset: new AMap.Pixel(-8, -8),
+		draggable:false,
+		bubble:true,
+		topWhenClick:true, 
+		//raiseOnDrag: true,
+		extData:myMarker,
+		//animation:"AMAP_ANIMATION_BOUNCE",
+        icon: new AMap.Icon({            
+            imageSize: new AMap.Size(16,16),
+            image: "ss.gif"
+        })        
+        });
+		var infoWindow = new AMap.InfoWindow({offset: new AMap.Pixel(0, -10),
+		size: new AMap.Size(240,125)});
+		marker.content = "经纬度："+new AMap.LngLat(Number(nodesArr[n]['nodeX-coordinate']),Number(nodesArr[n]['nodeY-coordinate']))+'\n'+'溢流量为' + (1000*Number(point.split(",")[5].split('"')[0]).toFixed(3)) + '立方米';
+		 marker.on('mouseover', function (e) 
+	{	
+	 infoWindow.setContent(e.target.content);
+        infoWindow.open(map, e.target.getPosition());
+	})
+		
+		
+		
+}
+}
+
+function loadPipeRByFile(fileName) {
+    //delRentLocation();
+    var point_locations = new Set();
+    $.get(fileName, function(data) {
+        data = data.split("\n");
+        data.forEach(function(item, index) {
+		if(item!="")
+            {point_locations.add(item);}
+			//alert(item)
+        });
+		//alert(point_locations[0])
+        point_locations.forEach(function(element, index) {
+		AddPipeR(element);
+    });
+	})
+}
+function AddPipeR(pipe){
+if(pipe.split(",")[0].split('"')[0]!=""){
+var fromLngLat=[0,0];
+var toLngLat=[0,0];
+//alert((pipe.split(",")[1]))
+if(pipeArr.hasOwnProperty('Pipe{0}'.Format({0:Number(pipe.split(",")[2].split('"')[0])})))
+	   {var fromLngLat=pipeArr['Pipe{0}'.Format({0:Number(pipe.split(",")[2].split('"')[0])})]['fromIDLngLat'];
+	   var toLngLat=pipeArr['Pipe{0}'.Format({0:Number(pipe.split(",")[2].split('"')[0])})]['toIDLngLat'];
+	   
+addPolydrawLineR([fromLngLat,toLngLat],pipe);
+}
+<!-- for(var n in nodesArr) {  -->
+
+  <!-- if(nodesArr[n]['ID']==fromID) -->
+  <!-- {  -->
+
+   <!-- fromLngLat=[nodesArr[n]['nodeX-coordinate'],nodesArr[n]['nodeY-coordinate']]; -->
+  <!-- } -->
+  <!-- if(nodesArr[n]['ID']==toID) -->
+  <!-- {  -->
+   <!-- toLngLat=[nodesArr[n]['nodeX-coordinate'],nodesArr[n]['nodeY-coordinate']]; -->
+  <!-- } -->
+
+<!-- if (fromLngLat[0]!=0 && toLngLat[0]!=0) -->
+<!-- { -->
+<!-- break; -->
+<!-- } -->
+
+//alert((fromLngLat[0],fromLngLat[1]),(toLngLat[0],toLngLat[1]))
+//alert(new AMap.LngLat(fromLngLat[0],fromLngLat[1]),new AMap.LngLat(toLngLat[0],toLngLat[1]))
+
+	
+}
+}
+<!-- var zoomchange = map.on('zoomchange', function(e) { -->
+<!-- var allmarkers=[] -->
+<!-- var newmarker=[] -->
+<!-- var alloverlaysList=map.getAllOverlays() -->
+<!-- $.each(alloverlaysList, function (k) { -->
+<!-- //if(alloverlaysList[k].CLASS_NAME=='AMap.Marker'){} -->
+<!-- // -->
+<!-- var scale=18-map.getZoom() -->
+<!-- //alert(scale) Number(16/Math.pow(1.1,scale)) Number(18/Math.pow(1.1,scale)) -->
+<!-- alloverlaysList[k].getIcon().setImageSize({width:Number(16/Math.pow(1.2,scale)),height:Number(20/Math.pow(1.2,scale))}) -->
+<!-- //alert(Math.pow(2,scale),Math.pow(2,scale)) -->
+ <!-- newmarker=(alloverlaysList[k]); -->
+
+<!-- alloverlaysList[k].setMap(null) -->
+ <!-- newmarker.setMap(map) -->
+<!-- }) -->
+<!-- }) -->
+
+
+
+function toChange(obj, id)
+{
+if(obj.value=="子汇水面积")
+{
+obj2=document.getElementById(id)
+var length = obj2.options.length - 1;    
+     for(var i = length; i >= 0; i--){    
+   
+             obj2.options[i] = null;    
+}
+obj2.options.add(new Option("标签")); 
+obj2.options.add(new Option("雨量计")); 
+obj2.options.add(new Option("面积")); 
+obj2.options.add(new Option("宽度")); 
+obj2.options.add(new Option("坡度（%）")); 
+obj2.options.add(new Option("不渗透性（%）")); 
+obj2.options.add(new Option("不渗透性粗糙系数N值")); 
+obj2.options.add(new Option("渗透性粗糙系数N值")); 
+obj2.options.add(new Option("不渗透性洼地蓄水")); 
+obj2.options.add(new Option("渗透性洼地蓄水")); 
+obj2.options.add(new Option("无洼地蓄水不渗透性（%）")); 
+obj2.options.add(new Option("土地利用")); 
+obj2.options.add(new Option("边石长度"));
+obj2.options.add(new Option("积雪"));
+obj2.options.add(new Option("地下水"));
+}
+
+
+if(obj.value=="下渗")
+{obj2=document.getElementById(id)
+var length = obj2.options.length - 1;    
+     for(var i = length; i >= 0; i--){    
+   
+             obj2.options[i] = null;  			 
+}
+if($("#defaultsubInflitration").val()=="HORTON")
+{obj2.options.add(new Option("最大速率")); 
+obj2.options.add(new Option("最小速率")); 
+obj2.options.add(new Option("衰减常数")); 
+obj2.options.add(new Option("干旱时间")); 
+obj2.options.add(new Option("最大容积")); 
+}
+if($("#defaultsubInflitration").val()=="GREEN-AMPT")
+{obj2.options.add(new Option("吸入水头")); 
+obj2.options.add(new Option("导水率")); 
+obj2.options.add(new Option("初始亏损")); 
+}
+
+if($("#defaultsubInflitration").val()=="CURVE_NUMBER")
+{obj2.options.add(new Option("曲线数")); 
+obj2.options.add(new Option("导水率")); 
+obj2.options.add(new Option("排干时间")); 
+}
+
+
+
+
+
+}
+
+if(obj.value=="节点")
+{
+obj2=document.getElementById(id)
+var length = obj2.options.length - 1;    
+     for(var i = length; i >= 0; i--){    
+   
+             obj2.options[i] = null;    
+}
+obj2.options.add(new Option("标签")); 
+obj2.options.add(new Option("内底标高")); 
+obj2.options.add(new Option("最大深度")); 
+obj2.options.add(new Option("初始深度")); 
+obj2.options.add(new Option("超载深度")); 
+obj2.options.add(new Option("积水面积")); 
+}
+if(obj.value=="蓄水设施")
+{
+obj2=document.getElementById(id)
+var length = obj2.options.length - 1;    
+     for(var i = length; i >= 0; i--){    
+   
+             obj2.options[i] = null;    
+}
+obj2.options.add(new Option("标签")); 
+obj2.options.add(new Option("内底标高")); 
+obj2.options.add(new Option("最大深度")); 
+obj2.options.add(new Option("初始深度")); 
+obj2.options.add(new Option("积水面积")); 
+obj2.options.add(new Option("蒸发因子")); 
+obj2.options.add(new Option("Curve 系数")); 
+obj2.options.add(new Option("Curve 指数")); 
+obj2.options.add(new Option("Curve 常数")); 
+obj2.options.add(new Option("Curve Name")); 
+}
+if(obj.value=="管渠")
+{
+obj2=document.getElementById(id)
+var length = obj2.options.length - 1;    
+     for(var i = length; i >= 0; i--){    
+   
+             obj2.options[i] = null;    
+}
+obj2.options.add(new Option("标签")); 
+obj2.options.add(new Option("形状")); 
+obj2.options.add(new Option("最大深度")); 
+obj2.options.add(new Option("长度")); 
+obj2.options.add(new Option("粗糙系数")); 
+obj2.options.add(new Option("进水偏移")); 
+obj2.options.add(new Option("出水偏移")); 
+obj2.options.add(new Option("初始流量")); 
+obj2.options.add(new Option("最大流量")); 
+obj2.options.add(new Option("进口损失系数")); 
+obj2.options.add(new Option("出口损失系数")); 
+obj2.options.add(new Option("平均损失系数")); 
+}
+
+}
+
+
+
+
+
+function choosesubInflitration(obj)
+{
+if($('#subInflitration').val()=="HORTON")
+{
+
+$('#subInflitrationModal').modal('show');
+showHorton();
+}
+if($('#subInflitration').val()=="GREEN-AMPT")
+{
+
+$('#subGreenModal').modal('show');
+showGreenAmpt();
+}
+if($('#subInflitration').val()=="CURVE_NUMBER")
+{
+
+$('#subCurveModal').modal('show');
+showCurve();
+}
+}
+function choosesubdefaultInflitration(obj)
+{
+if($('#defaultsubInflitration').val()=="" || $('#defaultsubInflitration').val()=="HORTON")
+{
+
+$('#defaultsubInflitrationModal').modal('show');
+
+}
+if($('#defaultsubInflitration').val()=="GREEN-AMPT")
+{
+
+$('#defaultsubGreenModal').modal('show');
+
+}
+if($('#defaultsubInflitration').val()=="CURVE_NUMBER")
+{
+
+$('#defaultsubCurveModal').modal('show');
+
+}
+}
+function selectOnchangH(obj)
+{ 
+//获取被选中的option标签选项 
+$('#defaultsubInflitrationModal').modal('hide');
+
+if(obj.options[obj.selectedIndex].value=="GREEN-AMPT"){
+	$('#defaultsubGreenModal').modal('show');
+    $('#Ginflitration').val('GREEN-AMPT')
+}
+if(obj.options[obj.selectedIndex].value=="CURVE_NUMBER"){
+	$('#defaultsubCurveModal').modal('show');
+	$('#Cinflitration').val('CURVE_NUMBER')
+}
+
+}
+function selectOnchangG(obj)
+{ 
+$('#defaultsubGreenModal').modal('hide');
+if(obj.options[obj.selectedIndex].value=="CURVE_NUMBER"){
+	$('#defaultsubCurveModal').modal('show');
+	$('#Cinflitration').val('CURVE_NUMBER')
+}
+if(obj.options[obj.selectedIndex].value=="HORTON"){
+	$('#defaultsubInflitrationModal').modal('show');
+	$('#Hinflitration').val('HORTON')
+}}
+function selectOnchangC(obj)
+{ $('#defaultsubCurveModal').modal('hide');
+if(obj.options[obj.selectedIndex].value=="HORTON"){
+	$('#defaultsubInflitrationModal').modal('show');
+	$('#Hinflitration').val('HORTON')
+}
+if(obj.options[obj.selectedIndex].value=="GREEN-AMPT"){
+	$('#defaultsubGreenModal').modal('show');
+	$('#Ginflitration').val('GREEN-AMPT')
+
+}}
+function addPolydrawLine(list) {
+var mypipe=[];
+     var polydrawLine = new AMap.Polyline({
+        path: list,          //设置线覆盖物路径
+        strokeColor: "#0000CD", //线颜色
+        strokeOpacity: 1,       //线透明度
+        strokeWeight: 3,        //线宽
+        strokeStyle: "solid",   //线样式
+        strokeDasharray: [10, 5], //补充线样式
+		extData:mypipe,
+		isOutline:true,
+		//outlineColor:'#00FFFF',
+		borderWeight:1,
+		showDir: true
+		
+    });
+	mypipe['ID']=ID;
+	mypipe['Type']="pipe";
+    polydrawLine.setMap(map);
+}
+function addPolydrawLineR(list,pipe) {
+
+var mypipe=[];
+     var polydrawLine = new AMap.Polyline({
+        path: list,          //设置线覆盖物路径
+        strokeColor: "#EA2000", //线颜色
+        strokeOpacity: 1,       //线透明度
+        strokeWeight: 3,        //线宽
+        strokeStyle: "solid",   //线样式
+        strokeDasharray: [10, 5], //补充线样式
+		extData:mypipe,
+		isOutline:true,
+		//outlineColor:'#00FFFF',
+		borderWeight:1,
+		showDir: true
+		
+    });
+			var infoWindow = new AMap.InfoWindow({offset: new AMap.Pixel(0, -10),
+			size: new AMap.Size(240,125)});
+			//alert(pipe)
+		polydrawLine.content = "经纬度："+list[0]+'\n'+'超载时间为' + (Number(pipe.split(",")[3]).toFixed(2)) + '小时';
+		 polydrawLine.on('mouseover', function (e) 
+	{	
+	 infoWindow.setContent(e.target.content);
+        infoWindow.open(map, e.target.getPath()[0]);
+	})
+	mypipe['ID']=ID;
+	mypipe['Type']="pipe";
+    polydrawLine.setMap(map);
+}
+function linknode(list)
+{var mypipe=[];
+	mypipe['Type']="link";
+	var polydrawLine = new AMap.Polyline({
+        path: list,          //设置线覆盖物路径
+        strokeColor: "#B0C4DE", //线颜色
+        strokeOpacity: 1,       //线透明度
+        strokeWeight: 5,        //线宽
+        strokeStyle: "dashed",   //线样式
+        strokeDasharray: [10, 5], //补充线样式
+		extData:mypipe,
+		showDir: true
+    });
+	polydrawLine.setMap(map);
+
+
+
+}
+$(function () {
+   /*自定义字符串格式化*/
+  String.prototype.Format = function (args) {
+   /*this代表要调用Format方法的字符串*/
+   /*replace的第一个参数为正则表达式，g表示处理匹配到的所有字符串，在js中使用//包起来*/
+   /*replace的第二个参数为匹配字符串的处理，k1匹配结果包含{}，k2只保留{}内的内容*/
+   var temp = this.replace(/\{(\w+)\}/g, function (k1, k2) {
+    console.log(k1, k2);
+    /*replace将匹配到的k2用参数args替换后赋给新变量temp*/
+    return args[k2];
+   });
+   /*自定义方法Format将格式化后的字符串返回*/
+   return temp;
+  };
+ })
+ 
+//保存图片 
+function saveFile(data, filename) {
+    const save_link = document.createElementNS('http://www.w3.org/1999/xhtml', 'a');
+    save_link.href = data;
+    save_link.download = filename;
+    const event = document.createEvent('MouseEvents');
+    event.initMouseEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+    save_link.dispatchEvent(event);
+}
+	
+	    
+ //通过map转换为容器像素  
+function convert2container(arr) {
+    return arr.map(function(item) {
+      var pixel = map.lnglatTocontainer([item.lng, item.lat])
+      return [pixel.getX(), pixel.getY()]
+    })
+  }	
+  //通过map转换为地理像素 
+  function convert2pixel(arr) {
+    return arr.map(function(item) {
+      var pixel = map.lnglatToPixel([item.lng, item.lat],10)
+      return [pixel.getX(), pixel.getY()]
+    })
+  }	
+  
+  function cut(map, myCanvas, editpolygon, cb) {
+  
+  //由于drawSub给的数值是经纬度的，所以首先要转成基于浏览器像素的，高德提供这个方法。
+var points = convert2container(editpolygon);
+var originpoints=Array.from(points);
+  //下面的两个升序排序是为了得到不规则多边形的矩形容器左上角的像素起点的xy轴，还有右下角的xy轴
+  //X轴升序
+  //这里要注意为什么要使用Array.from呢。是为了创建一份独立的数据，不然yAsc排序后xAsc 也会改变
+  var xAsc =Array.from(points.sort(function(a, b) {
+    return a[0] > b[0]
+  }));
+  //y轴升序
+  var yAsc = points.sort(function(a, b) {
+    return a[1] > b[1]
+	});
+	 var min = [xAsc[0][0], yAsc[0][1]]    
+  //右下角像素坐标
+  var max = [xAsc[xAsc.length - 1][0], yAsc[yAsc.length - 1][1]]
+  //从canvas中获得图像方法需要4个参数。起点的x y轴, width, height。 +20为了不让生成的图片都贴这边
+  var width = max[0] - min[0] //+ 20
+  var height = max[1] - min[1] //+20
+  //下面的-10 是起点的xy轴都往左上角缩小10像素。
+  //imgData是得到多边形范围的数据
+  var imgData = myCanvas.getContext('2d').getImageData(xAsc[0][0], yAsc[0][1], width, height)
+  var pixelposition=originpoints.map(function(item){
+  return [Math.round(item[0]-xAsc[0][0]),Math.round(item[1]-yAsc[0][1])]
+  })
+  pixelArr.push(pixelposition);
+   //创建一个新的canvas是为了把得到的imgData数据写入，然后转成最终效果的base64
+  canvas2 = document.createElement("canvas") 
+  var cxt2 = canvas2.getContext("2d")
+  canvas2.width = Math.round(width)
+  canvas2.height = Math.round(height)
+  cxt2.putImageData(imgData, 0, 0, 0, 0, Math.round(width), Math.round(height))
+  cb && cb({
+    src: canvas2.toDataURL('image/png'),
+    width: Math.round(width),
+    height: Math.round(height)
+  })
+	}
+	
+	
+//两点距离
+function GetSingleDistance(Position)
+{var SingleDistance=new Array()
+
+for (var i=0;i<Position.length-1;i++)
+{
+SingleDistance.push(new AMap.LngLat(Position[i].getLng(),Position[i].getLat()).distance(Position[i+1]))
+}
+return SingleDistance;
+}	
+
+
+	 AMap.event.addDomListener($('#zuobiaook').get(0), 'click', function() {
+	  $('#LngLatpool').hide();
+	  });
+	  //坐标转换
+  var x_PI = 3.14159265358979324 * 3000.0 / 180.0;
+  var PI = 3.1415926535897932384626;
+  var a = 6378245.0;
+  var ee = 0.00669342162296594323;
+	var bd09togcj02 = function bd09togcj02(bd_lon, bd_lat) {
+    var bd_lon = +bd_lon;
+    var bd_lat = +bd_lat;
+    var x = bd_lon - 0.0065;
+    var y = bd_lat - 0.006;
+    var z = Math.sqrt(x * x + y * y) - 0.00002 * Math.sin(y * x_PI);
+    var theta = Math.atan2(y, x) - 0.000003 * Math.cos(x * x_PI);
+    var gg_lng = z * Math.cos(theta).toFixed(6);
+    var gg_lat = z * Math.sin(theta).toFixed(6);
+    return [gg_lng, gg_lat]
+  };
+	var gcj02tobd09 = function gcj02tobd09(lng, lat) {
+    var lat = +lat;
+    var lng = +lng;
+    var z = Math.sqrt(lng * lng + lat * lat) + 0.00002 * Math.sin(lat * x_PI);
+    var theta = Math.atan2(lat, lng) + 0.000003 * Math.cos(lng * x_PI);
+    var bd_lng = z * Math.cos(theta) + 0.0065;
+    var bd_lat = z * Math.sin(theta) + 0.006;
+    return [bd_lng.toFixed(6), bd_lat.toFixed(6)]
+  };
+  
+</script>
+<body>
+<script>
+        var Base64 = {
+            // private property
+            _keyStr: "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=",
+            // public method for encoding
+            encode: function (input) {
+                var output = "";
+                var chr1, chr2, chr3, enc1, enc2, enc3, enc4;
+                var i = 0;
+                input = Base64._utf8_encode(input);
+                while (i < input.length) {
+                    chr1 = input.charCodeAt(i++);
+                    chr2 = input.charCodeAt(i++);
+                    chr3 = input.charCodeAt(i++);
+                    enc1 = chr1 >> 2;
+                    enc2 = ((chr1 & 3) << 4) | (chr2 >> 4);
+                    enc3 = ((chr2 & 15) << 2) | (chr3 >> 6);
+                    enc4 = chr3 & 63;
+                    if (isNaN(chr2)) {
+                        enc3 = enc4 = 64;
+                    } else if (isNaN(chr3)) {
+                        enc4 = 64;
+                    }
+                    output = output +
+            this._keyStr.charAt(enc1) + this._keyStr.charAt(enc2) +
+            this._keyStr.charAt(enc3) + this._keyStr.charAt(enc4);
+                }
+                return output;
+            },
+            // public method for decoding
+            decode: function (input) {
+                var output = "";
+                var chr1, chr2, chr3;
+                var enc1, enc2, enc3, enc4;
+                var i = 0;
+                input = input.replace(/[^A-Za-z0-9\+\/\=]/g, "");
+                while (i < input.length) {
+                    enc1 = this._keyStr.indexOf(input.charAt(i++));
+                    enc2 = this._keyStr.indexOf(input.charAt(i++));
+                    enc3 = this._keyStr.indexOf(input.charAt(i++));
+                    enc4 = this._keyStr.indexOf(input.charAt(i++));
+                    chr1 = (enc1 << 2) | (enc2 >> 4);
+                    chr2 = ((enc2 & 15) << 4) | (enc3 >> 2);
+                    chr3 = ((enc3 & 3) << 6) | enc4;
+                    output = output + String.fromCharCode(chr1);
+                    if (enc3 != 64) {
+                        output = output + String.fromCharCode(chr2);
+                    }
+                    if (enc4 != 64) {
+                        output = output + String.fromCharCode(chr3);
+                    }
+                }
+                output = Base64._utf8_decode(output);
+                return output;
+            },
+            // private method for UTF-8 encoding
+            _utf8_encode: function (string) {
+                string = string.replace(/\r\n/g, "\n");
+                var utftext = "";
+                for (var n = 0; n < string.length; n++) {
+                    var c = string.charCodeAt(n);
+                    if (c < 128) {
+                        utftext += String.fromCharCode(c);
+                    }
+                    else if ((c > 127) && (c < 2048)) {
+                        utftext += String.fromCharCode((c >> 6) | 192);
+                        utftext += String.fromCharCode((c & 63) | 128);
+                    }
+                    else {
+                        utftext += String.fromCharCode((c >> 12) | 224);
+                        utftext += String.fromCharCode(((c >> 6) & 63) | 128);
+                        utftext += String.fromCharCode((c & 63) | 128);
+                    }
+                }
+                return utftext;
+            },
+            // private method for UTF-8 decoding
+            _utf8_decode: function (utftext) {
+                var string = "";
+                var i = 0;
+                var c = c1 = c2 = 0;
+                while (i < utftext.length) {
+                    c = utftext.charCodeAt(i);
+                    if (c < 128) {
+                        string += String.fromCharCode(c);
+                        i++;
+                    }
+                    else if ((c > 191) && (c < 224)) {
+                        c2 = utftext.charCodeAt(i + 1);
+                        string += String.fromCharCode(((c & 31) << 6) | (c2 & 63));
+                        i += 2;
+                    }
+                    else {
+                        c2 = utftext.charCodeAt(i + 1);
+                        c3 = utftext.charCodeAt(i + 2);
+                        string += String.fromCharCode(((c & 15) << 12) | ((c2 & 63) << 6) | (c3 & 63));
+                        i += 3;
+                    }
+                }
+                return string;
+            }
+        }
+
+</script>
+
+</body>
+</html>>
